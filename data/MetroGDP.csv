@@ -1,0 +1,376 @@
+"Real GDP by Metropolitan Area (millions of chained 2005 dollars)"
+"" 
+"Bureau of Economic Analysis" 
+"All industry total"
+"Fips","Area","2011"
+"00998","U.S. Metropolitan Portion",11807572
+"10180","Abilene, TX (MSA)",4831
+"10420","Akron, OH (MSA)",24259
+"10500","Albany, GA (MSA)",4168
+"10580","Albany-Schenectady-Troy, NY (MSA)",35299
+"10740","Albuquerque, NM (MSA)",34842
+"10780","Alexandria, LA (MSA)",4647
+"10900","Allentown-Bethlehem-Easton, PA-NJ (MSA)",26194
+"11020","Altoona, PA (MSA)",3682
+"11100","Amarillo, TX (MSA)",8815
+"11180","Ames, IA (MSA)",3613
+"11260","Anchorage, AK (MSA)",24375
+"11300","Anderson, IN (MSA)",2749
+"11340","Anderson, SC (MSA)",4106
+"11460","Ann Arbor, MI (MSA)",16434
+"11500","Anniston-Oxford, AL (MSA)",3196
+"11540","Appleton, WI (MSA)",8784
+"11700","Asheville, NC (MSA)",12535
+"12020","Athens-Clarke County, GA (MSA)",5704
+"12060","Atlanta-Sandy Springs-Marietta, GA (MSA)",249509
+"12100","Atlantic City-Hammonton, NJ (MSA)",11298
+"12220","Auburn-Opelika, AL (MSA)",3380
+"12260","Augusta-Richmond County, GA-SC (MSA)",16980
+"12420","Austin-Round Rock-San Marcos, TX (MSA)",84842
+"12540","Bakersfield-Delano, CA (MSA)",28265
+"12580","Baltimore-Towson, MD (MSA)",129709
+"12620","Bangor, ME (MSA)",4697
+"12700","Barnstable Town, MA (MSA)",7215
+"12940","Baton Rouge, LA (MSA)",37644
+"12980","Battle Creek, MI (MSA)",4133
+"13020","Bay City, MI (MSA)",2533
+"13140","Beaumont-Port Arthur, TX (MSA)",17829
+"13380","Bellingham, WA (MSA)",8507
+"13460","Bend, OR (MSA)",5360
+"13740","Billings, MT (MSA)",6424
+"13780","Binghamton, NY (MSA)",7743
+"13820","Birmingham-Hoover, AL (MSA)",46200
+"13900","Bismarck, ND (MSA)",4634
+"13980","Blacksburg-Christiansburg-Radford, VA (MSA)",4358
+"14020","Bloomington, IN (MSA)",5402
+"14060","Bloomington-Normal, IL (MSA)",8239
+"14260","Boise City-Nampa, ID (MSA)",25397
+"14460","Boston-Cambridge-Quincy, MA-NH (MSA)",291017
+"14500","Boulder, CO (MSA)",17866
+"14540","Bowling Green, KY (MSA)",3902
+"14740","Bremerton-Silverdale, WA (MSA)",7719
+"14860","Bridgeport-Stamford-Norwalk, CT (MSA)",74869
+"15180","Brownsville-Harlingen, TX (MSA)",7031
+"15260","Brunswick, GA (MSA)",2812
+"15380","Buffalo-Niagara Falls, NY (MSA)",39774
+"15500","Burlington, NC (MSA)",4127
+"15540","Burlington-South Burlington, VT (MSA)",10040
+"15940","Canton-Massillon, OH (MSA)",11322
+"15980","Cape Coral-Fort Myers, FL (MSA)",17747
+"16020","Cape Girardeau-Jackson, MO-IL (MSA)",3052
+"16180","Carson City, NV (MSA)",2378
+"16220","Casper, WY (MSA)",5995
+"16300","Cedar Rapids, IA (MSA)",13348
+"16580","Champaign-Urbana, IL (MSA)",7972
+"16620","Charleston, WV (MSA)",13060
+"16700","Charleston-North Charleston-Summerville, SC (MSA)",25051
+"16740","Charlotte-Gastonia-Rock Hill, NC-SC (MSA)",103662
+"16820","Charlottesville, VA (MSA)",8691
+"16860","Chattanooga, TN-GA (MSA)",18990
+"16940","Cheyenne, WY (MSA)",4354
+"16980","Chicago-Joliet-Naperville, IL-IN-WI (MSA)",476487
+"17020","Chico, CA (MSA)",5298
+"17140","Cincinnati-Middletown, OH-KY-IN (MSA)",88492
+"17300","Clarksville, TN-KY (MSA)",9648
+"17420","Cleveland, TN (MSA)",3064
+"17460","Cleveland-Elyria-Mentor, OH (MSA)",92681
+"17660","Coeur d'Alene, ID (MSA)",3809
+"17780","College Station-Bryan, TX (MSA)",6169
+"17820","Colorado Springs, CO (MSA)",23907
+"17860","Columbia, MO (MSA)",5951
+"17900","Columbia, SC (MSA)",27765
+"17980","Columbus, GA-AL (MSA)",10895
+"18020","Columbus, IN (MSA)",4134
+"18140","Columbus, OH (MSA)",82313
+"18580","Corpus Christi, TX (MSA)",16904
+"18700","Corvallis, OR (MSA)",5743
+"18880","Crestview-Fort Walton Beach-Destin, FL (MSA)",8457
+"19060","Cumberland, MD-WV (MSA)",2358
+"19100","Dallas-Fort Worth-Arlington, TX (MSA)",351002
+"19140","Dalton, GA (MSA)",4600
+"19180","Danville, IL (MSA)",2102
+"19260","Danville, VA (MSA)",2577
+"19340","Davenport-Moline-Rock Island, IA-IL (MSA)",15755
+"19380","Dayton, OH (MSA)",29744
+"19460","Decatur, AL (MSA)",4118
+"19500","Decatur, IL (MSA)",4808
+"19660","Deltona-Daytona Beach-Ormond Beach, FL (MSA)",10335
+"19740","Denver-Aurora-Broomfield, CO (MSA)",144296
+"19780","Des Moines-West Des Moines, IA (MSA)",35883
+"19820","Detroit-Warren-Livonia, MI (MSA)",175774
+"20020","Dothan, AL (MSA)",3889
+"20100","Dover, DE (MSA)",5267
+"20220","Dubuque, IA (MSA)",4276
+"20260","Duluth, MN-WI (MSA)",8483
+"20500","Durham-Chapel Hill, NC (MSA)",37407
+"20740","Eau Claire, WI (MSA)",5763
+"20940","El Centro, CA (MSA)",3878
+"21060","Elizabethtown, KY (MSA)",4860
+"21140","Elkhart-Goshen, IN (MSA)",8296
+"21300","Elmira, NY (MSA)",2605
+"21340","El Paso, TX (MSA)",24706
+"21500","Erie, PA (MSA)",8267
+"21660","Eugene-Springfield, OR (MSA)",10787
+"21780","Evansville, IN-KY (MSA)",14302
+"21820","Fairbanks, AK (MSA)",4355
+"22020","Fargo, ND-MN (MSA)",10868
+"22140","Farmington, NM (MSA)",4945
+"22180","Fayetteville, NC (MSA)",15462
+"22220","Fayetteville-Springdale-Rogers, AR-MO (MSA)",17202
+"22380","Flagstaff, AZ (MSA)",4198
+"22420","Flint, MI (MSA)",10173
+"22500","Florence, SC (MSA)",6086
+"22520","Florence-Muscle Shoals, AL (MSA)",3538
+"22540","Fond du Lac, WI (MSA)",3262
+"22660","Fort Collins-Loveland, CO (MSA)",10847
+"22900","Fort Smith, AR-OK (MSA)",8485
+"23060","Fort Wayne, IN (MSA)",16417
+"23420","Fresno, CA (MSA)",26621
+"23460","Gadsden, AL (MSA)",2279
+"23540","Gainesville, FL (MSA)",9012
+"23580","Gainesville, GA (MSA)",5783
+"24020","Glens Falls, NY (MSA)",3528
+"24140","Goldsboro, NC (MSA)",3555
+"24220","Grand Forks, ND-MN (MSA)",3551
+"24300","Grand Junction, CO (MSA)",4396
+"24340","Grand Rapids-Wyoming, MI (MSA)",29637
+"24500","Great Falls, MT (MSA)",2644
+"24540","Greeley, CO (MSA)",6495
+"24580","Green Bay, WI (MSA)",13155
+"24660","Greensboro-High Point, NC (MSA)",30725
+"24780","Greenville, NC (MSA)",5721
+"24860","Greenville-Mauldin-Easley, SC (MSA)",23667
+"25060","Gulfport-Biloxi, MS (MSA)",9065
+"25180","Hagerstown-Martinsburg, MD-WV (MSA)",7180
+"25260","Hanford-Corcoran, CA (MSA)",3602
+"25420","Harrisburg-Carlisle, PA (MSA)",24784
+"25500","Harrisonburg, VA (MSA)",5513
+"25540","Hartford-West Hartford-East Hartford, CT (MSA)",73258
+"25620","Hattiesburg, MS (MSA)",4331
+"25860","Hickory-Lenoir-Morganton, NC (MSA)",10416
+"25980","Hinesville-Fort Stewart, GA (MSA)",3242
+"26100","Holland-Grand Haven, MI (MSA)",7856
+"26180","Honolulu, HI (MSA)",44983
+"26300","Hot Springs, AR (MSA)",2373
+"26380","Houma-Bayou Cane-Thibodaux, LA (MSA)",9860
+"26420","Houston-Sugar Land-Baytown, TX (MSA)",365560
+"26580","Huntington-Ashland, WV-KY-OH (MSA)",8863
+"26620","Huntsville, AL (MSA)",19206
+"26820","Idaho Falls, ID (MSA)",3576
+"26900","Indianapolis-Carmel, IN (MSA)",89832
+"26980","Iowa City, IA (MSA)",6831
+"27060","Ithaca, NY (MSA)",3284
+"27100","Jackson, MI (MSA)",4225
+"27140","Jackson, MS (MSA)",21602
+"27180","Jackson, TN (MSA)",4188
+"27260","Jacksonville, FL (MSA)",52966
+"27340","Jacksonville, NC (MSA)",7328
+"27500","Janesville, WI (MSA)",4347
+"27620","Jefferson City, MO (MSA)",5035
+"27740","Johnson City, TN (MSA)",5709
+"27780","Johnstown, PA (MSA)",3471
+"27860","Jonesboro, AR (MSA)",3747
+"27900","Joplin, MO (MSA)",5153
+"28020","Kalamazoo-Portage, MI (MSA)",10677
+"28100","Kankakee-Bradley, IL (MSA)",2759
+"28140","Kansas City, MO-KS (MSA)",95470
+"28420","Kennewick-Pasco-Richland, WA (MSA)",9375
+"28660","Killeen-Temple-Fort Hood, TX (MSA)",13723
+"28700","Kingsport-Bristol-Bristol, TN-VA (MSA)",8764
+"28740","Kingston, NY (MSA)",4096
+"28940","Knoxville, TN (MSA)",28994
+"29020","Kokomo, IN (MSA)",3372
+"29100","La Crosse, WI-MN (MSA)",5028
+"29140","Lafayette, IN (MSA)",7242
+"29180","Lafayette, LA (MSA)",18248
+"29340","Lake Charles, LA (MSA)",12204
+"29420","Lake Havasu City-Kingman, AZ (MSA)",3180
+"29460","Lakeland-Winter Haven, FL (MSA)",14396
+"29540","Lancaster, PA (MSA)",17399
+"29620","Lansing-East Lansing, MI (MSA)",16825
+"29700","Laredo, TX (MSA)",5694
+"29740","Las Cruces, NM (MSA)",5018
+"29820","Las Vegas-Paradise, NV (MSA)",81001
+"29940","Lawrence, KS (MSA)",3083
+"30020","Lawton, OK (MSA)",4154
+"30140","Lebanon, PA (MSA)",3423
+"30300","Lewiston, ID-WA (MSA)",1733
+"30340","Lewiston-Auburn, ME (MSA)",3305
+"30460","Lexington-Fayette, KY (MSA)",20207
+"30620","Lima, OH (MSA)",3992
+"30700","Lincoln, NE (MSA)",12865
+"30780","Little Rock-North Little Rock-Conway, AR (MSA)",29080
+"30860","Logan, UT-ID (MSA)",3253
+"30980","Longview, TX (MSA)",9356
+"31020","Longview, WA (MSA)",2638
+"31100","Los Angeles-Long Beach-Santa Ana, CA (MSA)",663054
+"31140","Louisville-Jefferson County, KY-IN (MSA)",51634
+"31180","Lubbock, TX (MSA)",9189
+"31340","Lynchburg, VA (MSA)",7440
+"31420","Macon, GA (MSA)",6804
+"31460","Madera-Chowchilla, CA (MSA)",3251
+"31540","Madison, WI (MSA)",32163
+"31700","Manchester-Nashua, NH (MSA)",20647
+"31740","Manhattan, KS (MSA)",5499
+"31860","Mankato-North Mankato, MN (MSA)",3505
+"31900","Mansfield, OH (MSA)",3200
+"32580","McAllen-Edinburg-Mission, TX (MSA)",13252
+"32780","Medford, OR (MSA)",5444
+"32820","Memphis, TN-MS-AR (MSA)",55844
+"32900","Merced, CA (MSA)",5132
+"33100","Miami-Fort Lauderdale-Pompano Beach, FL (MSA)",231361
+"33140","Michigan City-La Porte, IN (MSA)",3124
+"33260","Midland, TX (MSA)",13404
+"33340","Milwaukee-Waukesha-West Allis, WI (MSA)",77283
+"33460","Minneapolis-St. Paul-Bloomington, MN-WI (MSA)",182059
+"33540","Missoula, MT (MSA)",3849
+"33660","Mobile, AL (MSA)",14405
+"33700","Modesto, CA (MSA)",13181
+"33740","Monroe, LA (MSA)",5656
+"33780","Monroe, MI (MSA)",3207
+"33860","Montgomery, AL (MSA)",12864
+"34060","Morgantown, WV (MSA)",5291
+"34100","Morristown, TN (MSA)",3090
+"34580","Mount Vernon-Anacortes, WA (MSA)",5035
+"34620","Muncie, IN (MSA)",3017
+"34740","Muskegon-Norton Shores, MI (MSA)",4194
+"34820","Myrtle Beach-North Myrtle Beach-Conway, SC (MSA)",8551
+"34900","Napa, CA (MSA)",5868
+"34940","Naples-Marco Island, FL (MSA)",11687
+"34980","Nashville-Davidson-Murfreesboro-Franklin, TN (MSA)",75968
+"35300","New Haven-Milford, CT (MSA)",34390
+"35380","New Orleans-Metairie-Kenner, LA (MSA)",66768
+"35620","New York-Northern New Jersey-Long Island, NY-NJ-PA (MSA)",1123460
+"35660","Niles-Benton Harbor, MI (MSA)",4737
+"35840","North Port-Bradenton-Sarasota, FL (MSA)",21056
+"35980","Norwich-New London, CT (MSA)",11311
+"36100","Ocala, FL (MSA)",6277
+"36140","Ocean City, NJ (MSA)",3506
+"36220","Odessa, TX (MSA)",6078
+"36260","Ogden-Clearfield, UT (MSA)",16621
+"36420","Oklahoma City, OK (MSA)",53509
+"36500","Olympia, WA (MSA)",7708
+"36540","Omaha-Council Bluffs, NE-IA (MSA)",42341
+"36740","Orlando-Kissimmee-Sanford, FL (MSA)",89948
+"36780","Oshkosh-Neenah, WI (MSA)",7051
+"36980","Owensboro, KY (MSA)",3844
+"37100","Oxnard-Thousand Oaks-Ventura, CA (MSA)",33684
+"37340","Palm Bay-Melbourne-Titusville, FL (MSA)",17324
+"37380","Palm Coast, FL (MSA)",1101
+"37460","Panama City-Lynn Haven-Panama City Beach, FL (MSA)",5628
+"37620","Parkersburg-Marietta-Vienna, WV-OH (MSA)",4778
+"37700","Pascagoula, MS (MSA)",5291
+"37860","Pensacola-Ferry Pass-Brent, FL (MSA)",12425
+"37900","Peoria, IL (MSA)",17447
+"37980","Philadelphia-Camden-Wilmington, PA-NJ-DE-MD (MSA)",308377
+"38060","Phoenix-Mesa-Glendale, AZ (MSA)",173026
+"38220","Pine Bluff, AR (MSA)",2623
+"38300","Pittsburgh, PA (MSA)",101576
+"38340","Pittsfield, MA (MSA)",4597
+"38540","Pocatello, ID (MSA)",2449
+"38860","Portland-South Portland-Biddeford, ME (MSA)",22713
+"38900","Portland-Vancouver-Hillsboro, OR-WA (MSA)",140896
+"38940","Port St. Lucie, FL (MSA)",9617
+"39100","Poughkeepsie-Newburgh-Middletown, NY (MSA)",20223
+"39140","Prescott, AZ (MSA)",3708
+"39300","Providence-New Bedford-Fall River, RI-MA (MSA)",59338
+"39340","Provo-Orem, UT (MSA)",14247
+"39380","Pueblo, CO (MSA)",3645
+"39460","Punta Gorda, FL (MSA)",2863
+"39540","Racine, WI (MSA)",5821
+"39580","Raleigh-Cary, NC (MSA)",51903
+"39660","Rapid City, SD (MSA)",4460
+"39740","Reading, PA (MSA)",12660
+"39820","Redding, CA (MSA)",4355
+"39900","Reno-Sparks, NV (MSA)",17942
+"40060","Richmond, VA (MSA)",57529
+"40140","Riverside-San Bernardino-Ontario, CA (MSA)",96675
+"40220","Roanoke, VA (MSA)",11548
+"40340","Rochester, MN (MSA)",8504
+"40380","Rochester, NY (MSA)",40076
+"40420","Rockford, IL (MSA)",11340
+"40580","Rocky Mount, NC (MSA)",5122
+"40660","Rome, GA (MSA)",2731
+"40900","Sacramento-Arden-Arcade-Roseville, CA (MSA)",82628
+"40980","Saginaw-Saginaw Township North, MI (MSA)",6040
+"41060","St. Cloud, MN (MSA)",6639
+"41100","St. George, UT (MSA)",3133
+"41140","St. Joseph, MO-KS (MSA)",3981
+"41180","St. Louis, MO-IL (MSA)",114072
+"41420","Salem, OR (MSA)",10852
+"41500","Salinas, CA (MSA)",14568
+"41540","Salisbury, MD (MSA)",3616
+"41620","Salt Lake City, UT (MSA)",62595
+"41660","San Angelo, TX (MSA)",3468
+"41700","San Antonio-New Braunfels, TX (MSA)",75397
+"41740","San Diego-Carlsbad-San Marcos, CA (MSA)",152916
+"41780","Sandusky, OH (MSA)",2672
+"41860","San Francisco-Oakland-Fremont, CA (MSA)",303371
+"41940","San Jose-Sunnyvale-Santa Clara, CA (MSA)",176446
+"42020","San Luis Obispo-Paso Robles, CA (MSA)",9288
+"42060","Santa Barbara-Santa Maria-Goleta, CA (MSA)",17865
+"42100","Santa Cruz-Watsonville, CA (MSA)",8174
+"42140","Santa Fe, NM (MSA)",5505
+"42220","Santa Rosa-Petaluma, CA (MSA)",18070
+"42340","Savannah, GA (MSA)",11560
+"42540","Scranton-Wilkes-Barre, PA (MSA)",17200
+"42660","Seattle-Tacoma-Bellevue, WA (MSA)",213393
+"42680","Sebastian-Vero Beach, FL (MSA)",3541
+"43100","Sheboygan, WI (MSA)",4544
+"43300","Sherman-Denison, TX (MSA)",3324
+"43340","Shreveport-Bossier City, LA (MSA)",19426
+"43580","Sioux City, IA-NE-SD (MSA)",5334
+"43620","Sioux Falls, SD (MSA)",13974
+"43780","South Bend-Mishawaka, IN-MI (MSA)",11072
+"43900","Spartanburg, SC (MSA)",9177
+"44060","Spokane, WA (MSA)",16291
+"44100","Springfield, IL (MSA)",8537
+"44140","Springfield, MA (MSA)",20135
+"44180","Springfield, MO (MSA)",13383
+"44220","Springfield, OH (MSA)",3086
+"44300","State College, PA (MSA)",5486
+"44600","Steubenville-Weirton, OH-WV (MSA)",2814
+"44700","Stockton, CA (MSA)",16861
+"44940","Sumter, SC (MSA)",2779
+"45060","Syracuse, NY (MSA)",23762
+"45220","Tallahassee, FL (MSA)",11619
+"45300","Tampa-St. Petersburg-Clearwater, FL (MSA)",102454
+"45460","Terre Haute, IN (MSA)",4975
+"45500","Texarkana, TX-Texarkana, AR (MSA)",4016
+"45780","Toledo, OH (MSA)",23939
+"45820","Topeka, KS (MSA)",8124
+"45940","Trenton-Ewing, NJ (MSA)",23400
+"46060","Tucson, AZ (MSA)",28060
+"46140","Tulsa, OK (MSA)",40666
+"46220","Tuscaloosa, AL (MSA)",7414
+"46340","Tyler, TX (MSA)",8266
+"46540","Utica-Rome, NY (MSA)",8017
+"46660","Valdosta, GA (MSA)",3773
+"46700","Vallejo-Fairfield, CA (MSA)",12136
+"47020","Victoria, TX (MSA)",5136
+"47220","Vineland-Millville-Bridgeton, NJ (MSA)",4373
+"47260","Virginia Beach-Norfolk-Newport News, VA-NC (MSA)",70075
+"47300","Visalia-Porterville, CA (MSA)",9880
+"47380","Waco, TX (MSA)",7712
+"47580","Warner Robins, GA (MSA)",4835
+"47900","Washington-Arlington-Alexandria, DC-VA-MD-WV (MSA)",380714
+"47940","Waterloo-Cedar Falls, IA (MSA)",7404
+"48140","Wausau, WI (MSA)",5069
+"48300","Wenatchee-East Wenatchee, WA (MSA)",3107
+"48540","Wheeling, WV-OH (MSA)",4709
+"48620","Wichita, KS (MSA)",23875
+"48660","Wichita Falls, TX (MSA)",5118
+"48700","Williamsport, PA (MSA)",3611
+"48900","Wilmington, NC (MSA)",12534
+"49020","Winchester, VA-WV (MSA)",4545
+"49180","Winston-Salem, NC (MSA)",20214
+"49340","Worcester, MA (MSA)",26834
+"49420","Yakima, WA (MSA)",6435
+"49620","York-Hanover, PA (MSA)",13297
+"49660","Youngstown-Warren-Boardman, OH-PA (MSA)",14714
+"49700","Yuba City, CA (MSA)",3958
+"49740","Yuma, AZ (MSA)",4412
+"Legend / Footnotes:"
+"Note-- NAICS Industry detail is based on the 2002 North American Industry Classification System (NAICS)."
+"Note-- Per capita real GDP statistics for 2001-2011 reflect Census Bureau mid-year population estimates available as of April 2012."
+"Last updated: February 22, 2013"
