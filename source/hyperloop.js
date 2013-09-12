@@ -81,6 +81,7 @@ var dv = {
 	Uncomment the script tag in html and then this when you need the google API
 	geo: new google.maps.Geocoder(),
 */
+	force: {},
 	get: {},
 	index: {},
 	scale: {},
@@ -233,15 +234,21 @@ dv.create.links = function() {
 		hwyIndex = dv.index.highways,
 		msa = dv.index.msa,
 		links = dv.data.links,
-		i, i2, hwyNumber, highway, fips, fips2;
+		source = {},
+		target = {},
+		i, i2, hwyNumber, highway, fips, fips2, city, city2;
 
 	for (i = hwyIndex.length - 1; i >= 0; i--) {
 		hwyNumber = hwyIndex[i];
 		highway = highways[hwyNumber];
 		for (i2 = highway.length - 1; i2 >= 1; i2--) {
 			fips = highway[i2];
+			city = msa[fips];
 			fips2 = highway[i2-1];
-			links.push({source: msa[fips].index, target: msa[fips2].index, highway: hwyNumber});
+			city2 = msa[fips2];
+			source = {geoLng: city.geoLng, geoLat: city.geoLat, fips: city.fips};
+			target = {geoLng: city2.geoLng, geoLat: city2.geoLat, fips: city2.fips};
+			links.push({source: source, target: target, Highway: hwyNumber});
 		}
 	}
 };
@@ -321,22 +328,37 @@ dv.draw.states = function() {
 };
 
 dv.draw.cities = function() {
+
 	dv.svg.cities = dv.svg.map.append('svg:g')
 		.attr('id', 'cities')
 		.selectAll('.city')
 			.data(dv.data.msa)
 			.enter().append('svg:circle')
 				.attr('r', 5)
-				.attr('cx', function(d) { return dv.scale.projection([d.geoLng,d.geoLat])[0]; })
-				.attr('cy', function(d) { return dv.scale.projection([d.geoLng,d.geoLat])[1]; })
+				.attr('cx', function(d) { return dv.scale.projection([d.geoLng, d.geoLat])[0]; })
+				.attr('cy', function(d) { return dv.scale.projection([d.geoLng, d.geoLat])[1]; })
 	;
+
+	dv.svg.links = dv.svg.map.append('svg:g')
+		.attr('id', 'links')
+		.selectAll('.link')
+			.data(dv.data.links)
+			.enter().append('svg:line')
+				.attr('x1', function(d) { return dv.scale.projection([d.source.geoLng, d.source.geoLat])[0]; })
+				.attr('y1', function(d) { return dv.scale.projection([d.source.geoLng, d.source.geoLat])[1]; })
+				.attr('x2', function(d) { return dv.scale.projection([d.target.geoLng, d.target.geoLat])[0]; })
+				.attr('y2', function(d) { return dv.scale.projection([d.target.geoLng, d.target.geoLat])[1]; })
+				.style('display', function(d) { if (d.Highway === '101') { return 'block'; } else { return 'none'; }})
+	;
+
 	dv.svg.labels = dv.svg.map.append('svg:g')
 		.attr('id', 'labels')
 		.selectAll('.label')
-			.data(dv.data.cities)
+			.data(dv.data.msa)
 			.enter().append('svg:text')
-				.attr('dx', function(d) { return dv.scale.projection([d.geoLng,d.geoLat])[0] + 9; })
-				.attr('dy', function(d) { return dv.scale.projection([d.geoLng,d.geoLat])[1] + 5; })
+				.attr('dx', function(d) { return dv.scale.projection([d.geoLng, d.geoLat])[0] + 9; })
+				.attr('dy', function(d) { return dv.scale.projection([d.geoLng, d.geoLat])[1] + 5; })
+				.style('display', function(d) { if (d.Highway === '101') { return 'block'; } else { return 'none'; }})
 				.text(function(d) { return d.City + ' (' + d.FIPS + ')'; })
 	;
 };

@@ -2,3 +2,9 @@ svg #states path {
   fill: none;
   stroke: #DDE;
   stroke-width: 1px; }
+svg #cities {
+  fill: #AAB;
+  opacity: 0.8; }
+svg #links {
+  stroke: #AAB;
+  stroke-width: 1px; }
