@@ -72,26 +72,24 @@ data.graph = {
 // all static variables and object placeholders
 
 var dv = {
-	dim: {},
-	data: {},
-	index: {},
-	svg: {},
-	setup: {},
-	get: {},
 	create: {},
-	update: {},
-	calc: {},
+	data: {},
+	dim: {},
 	draw: {},
-	clear: {},
-	util: {},
-	scale: {},
-	path: {},
 	format: {},
-	state: { loading: 0	},
 /*
-	Uncomment this back out when you're online and need the google API
+	Uncomment the script tag in html and then this when you need the google API
 	geo: new google.maps.Geocoder(),
 */
+	get: {},
+	index: {},
+	scale: {},
+	setup: {},
+	sort: {},
+	state: { loading: 0	},
+	svg: {},
+	update: {},
+	util: {},
 };
 
 // dv.opt stores all options that can be changed "on the fly"
@@ -122,20 +120,15 @@ dv.setup.variables = function() {
 		w: dv.dim.win.w,
 		h: dv.dim.win.w * 0.63
 	};
+
+	dv.console = function() {
+	};
 };
 
+// calls dv.setup.withData() once all of the data has been loaded
 dv.update.loading = function(change) {
 	dv.state.loading += change;
 	if (dv.state.loading === 0) { dv.setup.withData(); }
-};
-
-dv.update.locating = function(change) {
-	dv.state.locating += change;
-	if (dv.state.locating === 0) {
-		var csv = dv.util.objToCSV(dv.data.raw);
-		d3.select('body').append('div')
-			.html(csv);
-	}
 };
 
 // any setup that can be done before/while the data is being processed
@@ -147,118 +140,31 @@ dv.setup.withoutData = function() {
 // setup that has to be done after the data is loaded, called from dv.update.loading
 dv.setup.withData = function() {
 	//dv.setup.compare();
-	dv.setup.cities('cities');
-	dv.setup.links();
-	dv.setup.scales();
+	dv.create.cities('cities');
+	dv.create.highways();
+	dv.create.links();
+	dv.create.scales();
 	dv.draw.svg();
 	dv.draw.states();
 	dv.draw.cities();
 };
 
-dv.setup.links = function() {
-	dv.data.links = [];
-	dv.data.highways = {};
-	var i, city, fips, hwyNumber, highway, i2, interstate,
-		highways = dv.data.highways,
-		//msa = dv.data.msa,
-		msaIndex = dv.index.msa,
-		interstates = [],
-		hwyCities = [],
-		hwyKeys = [];
-	for (i = dv.data.msa.length - 1; i >= 0; i--) {
-		city = dv.data.msa[i];
-		if (city.Interstate) {
-			interstates = city.Interstate.split(',');
-			for (i2 = interstates.length - 1; i2 >= 0; i2--) {
-				interstate = interstates[i2];
-				if (!highways[interstate]) {
-					highways[interstate] = [];
-				}
-				highways[interstate].push(city.FIPS);
-			}
-		}
-	}
-	hwyKeys = d3.keys(highways);
-	for (i = hwyKeys.length - 1; i >= 0; i--) {
-		hwyNumber = hwyKeys[i];
-		highway = highways[hwyNumber];
-		hwyCities = [];
-		for (i2 = highway.length - 1; i2 >= 0; i2--) {
-			fips = highway[i2];
-			city = msaIndex[fips];
-			hwyCities.push(city);
-		}
-		hwyCities = dv.util.sortHighway(hwyNumber, hwyCities);
-		highways[hwyNumber] = hwyCities;
-	}
-};
-
-dv.util.sortHighway = function(hwyNumber, hwyCities) {
-	if (hwyNumber%2 === 0) {
-		hwyCities.sort(function(a, b) {
-			return b.geoLng - a.geoLng;
-		});
-	} else {
-		hwyCities.sort(function(a, b) {
-			return b.geoLat - a.geoLat;
-		});
-	}
-	return hwyCities;
-};
-
-dv.setup.compare = function() {
-	var both = {},
-		GDP = {},
-		pop = {},
-		city, i;
-
-	dv.opt.cities.col = 'Population';
-	dv.setup.cities('pop');
-	dv.opt.cities.col = 'GDP';
-	dv.setup.cities('GDP');
-
-	for (i = dv.data.GDP.length - 1; i >= 0; i--) {
-		city = dv.data.GDP[i];
-		GDP[city.FIPS] = city;
-		//console.log(city.City + ', ' + city.State);
-	}
-	for (i = dv.data.pop.length - 1; i >= 0; i--) {
-		city = dv.data.pop[i];
-		//console.log(city.City + ', ' + city.State);
-		if (GDP[city.FIPS] || GDP[city.FIPS] === 0) {
-			both[city.FIPS] = city;
-			delete GDP[city.FIPS];
-		} else {
-			pop[city.FIPS] = city;
-		}
-	}
-	dv.data.compare = {both:both, GDP:GDP, pop:pop};
-};
-
-dv.console = function(array) {
-	for (var i = array.length - 1; i >= 0; i--) {
-		var city = array[i];
-		console.log(city.City);
-	}
-};
-
-dv.setup.cities = function(name) {
+dv.create.cities = function(name) {
 	dv.data[name] = [];
 	dv.index[name] = {};
 	var optCity = dv.opt.cities,
 		optState = dv.opt.states,
-		col = optCity.col,
 		quant = optCity.quant,
 		cities = dv.data[name],
 		states = {},
 		i = 0,
 		msa = dv.data.msa,
 		index = dv.index[name],
+		sort = {data: dv.data.msa, indexName: 'msa', col: optCity.col, reverse: false},
 		fips, state;
 
-	msa.sort(function(a, b) {
-		return b[col] - a[col];
-	});
+	dv.sort.cities(sort);
+
 	if (optCity.allstates) {
 		while (cities.length <= 47 && i < msa.length) {
 			fips = msa[i].FIPS;
@@ -281,7 +187,103 @@ dv.setup.cities = function(name) {
 	}
 };
 
-dv.setup.scales = function() {
+// parses the highways column, adds cities to dv.data.highways in the order the appear on the highway
+dv.create.highways = function() {
+	dv.data.links = [];
+	dv.data.highways = {};
+	var i, city, cityHwy, fips, hwyNumber, hwyArr, hwyCities, i2,
+		hwyData = dv.data.highways,
+		msa = dv.data.msa,
+		msaIndex = dv.index.msa,
+		hwyKeys = [];
+	for (i = msa.length - 1; i >= 0; i--) {
+		city = msa[i];
+		if (city.Highway) {
+			cityHwy = city.Highway.split(',');
+			for (i2 = cityHwy.length - 1; i2 >= 0; i2--) {
+				hwyNumber = cityHwy[i2];
+				if (!hwyData[hwyNumber]) {
+					hwyData[hwyNumber] = [];
+				}
+				hwyData[hwyNumber].push(city.FIPS);
+			}
+		}
+	}
+	dv.index.highways = d3.keys(hwyData);
+	hwyKeys = dv.index.highways;
+	for (i = hwyKeys.length - 1; i >= 0; i--) {
+		hwyNumber = hwyKeys[i];
+		hwyArr = hwyData[hwyNumber];
+		hwyCities = [];
+		for (i2 = hwyArr.length - 1; i2 >= 0; i2--) {
+			fips = hwyArr[i2];
+			city = msaIndex[fips];
+			hwyCities.push(city.FIPS);
+		}
+		hwyCities = dv.sort.highway(hwyNumber, hwyCities);
+		hwyData[hwyNumber] = hwyCities;
+	}
+};
+
+// go through each highway, get each city, and create a link to its nearest neighbor, {source: index, target: index}
+// in that same function, add to the dijkstra array: {fips: {fips: true, fips: true, etc...}, fips: {fips:true}}  if (!dij.source.target) { dij.source.target = true;} if (!dij.target.source) {dij.target.source = true;}
+dv.create.links = function() {
+	dv.data.links = [];
+	var highways = dv.data.highways,
+		hwyIndex = dv.index.highways,
+		msa = dv.index.msa,
+		links = dv.data.links,
+		i, i2, hwyNumber, highway, fips, fips2;
+
+	for (i = hwyIndex.length - 1; i >= 0; i--) {
+		hwyNumber = hwyIndex[i];
+		highway = highways[hwyNumber];
+		for (i2 = highway.length - 1; i2 >= 1; i2--) {
+			fips = highway[i2];
+			fips2 = highway[i2-1];
+			links.push({source: msa[fips].index, target: msa[fips2].index, highway: hwyNumber});
+		}
+	}
+};
+
+// sorts the cities along a highway from north/south or east/west depending on the highway number 
+dv.sort.highway = function(hwyNumber, hwyCities) {
+	if (hwyNumber%2 === 0) {
+		hwyCities.sort(function(a, b) {
+			return b.geoLng - a.geoLng;
+		});
+	} else {
+		hwyCities.sort(function(a, b) {
+			return b.geoLat - a.geoLat;
+		});
+	}
+	return hwyCities;
+};
+
+// expects {data: someArray, indexName: 'indexName', col: 'someColName', reverse: false}
+// used to sort and index the list of major cities
+dv.sort.cities = function(opt) {
+	dv.index[opt.indexName] = {};
+	var col = opt.col,
+		data = opt.data,
+		index = dv.index[opt.indexName],
+		i, fips, city;
+	data.sort(function(a, b) {
+		if (opt.reverse) {
+			return a[col] - b[col];
+		} else {
+			return b[col] - a[col];
+		}
+	});
+	for (i = data.length - 1; i >= 0; i--) {
+		city = data[i];
+		fips = city.FIPS;
+		city.index = i;
+		index[fips] = city;
+	}
+};
+
+dv.create.scales = function() {
 	var scale = dv.scale.map;
 	dv.scale.projection = d3.geo.albersUsa()
 		.scale(scale)
@@ -322,7 +324,7 @@ dv.draw.cities = function() {
 	dv.svg.cities = dv.svg.map.append('svg:g')
 		.attr('id', 'cities')
 		.selectAll('.city')
-			.data(dv.data.cities)
+			.data(dv.data.msa)
 			.enter().append('svg:circle')
 				.attr('r', 5)
 				.attr('cx', function(d) { return dv.scale.projection([d.geoLng,d.geoLat])[0]; })
@@ -345,16 +347,22 @@ dv.get.data = function() {
 	dv.update.loading(2);
 	d3.csv(dv.opt.path.data, function(error, data) {
 		dv.data.msa = data;
-		dv.index.msa = {};
-		for (var i = data.length - 1; i >= 0; i--) {
-			dv.index.msa[data[i].FIPS] = data[i];
-		}
 		dv.update.loading(-1);
 	});
 	d3.json('data/us-states.json', function(json) {
 		dv.data.states = json.features;
 		dv.update.loading(-1);
 	});
+};
+
+// these functions were all used to generate lat and lng values for each city
+dv.update.locating = function(change) {
+	dv.state.locating += change;
+	if (dv.state.locating === 0) {
+		var csv = dv.util.objToCSV(dv.data.msa);
+		d3.select('body').append('div')
+			.html(csv);
+	}
 };
 
 dv.get.latlng = function() {

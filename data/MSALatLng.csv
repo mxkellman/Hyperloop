@@ -1,4 +1,4 @@
-FIPS,MSANameFull,GDP,GDPPerCapita,Population,MSACity,MSAState,City,State,geoLat,geoLng,SortA,SortB,Interstate,Spur
+FIPS,MSANameFull,GDP,GDPPerCapita,Population,MSACity,MSAState,City,State,geoLat,geoLng,SortA,SortB,Highway,Spur
 26180,"Honolulu, HI",44983,46682,963605,Honolulu,HI,Honolulu,HI,21.3069444,-157.8583333,4,-32,,
 11260,"Anchorage, AK",24375,62901,387514,Anchorage,AK,Anchorage,AK,61.2180556,-149.9002778,12,-30,,
 21820,"Fairbanks, AK",4355,43904,99194,Fairbanks,AK,Fairbanks,AK,64.8377778,-147.7163889,13,-30,,
@@ -365,10 +365,3 @@ FIPS,MSANameFull,GDP,GDPPerCapita,Population,MSACity,MSAState,City,State,geoLat,
 31700,"Manchester-Nashua, NH",20647,51399,401700,Manchester-Nashua,NH,Manchester,NH,42.9956397,-71.4547891,9,-14,,
 12620,"Bangor, ME",4697,30545,153773,Bangor,ME,Bangor,ME,44.8011821,-68.7778138,9,-14,,
 30340,"Lewiston-Auburn, ME",3305,30776,107389,Lewiston-Auburn,ME,Lewiston,ME,44.100351,-70.2147764,9,-14,,
-,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,
-,67344,,,,,,,,,,,,,
