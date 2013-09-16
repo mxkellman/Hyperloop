@@ -1,4 +1,9 @@
-// @import 'scss/foundation.scss';
+//@import 'scss/foundation.scss';
+
+ul, ol {
+	margin: 0;
+	list-style: none;
+}
 
 svg {
 	#states {
@@ -9,11 +14,50 @@ svg {
 		}
 	}
 	#cities {
-		fill: #AAB;
-		opacity: 0.8;
+		fill: #FFF;
+		stroke: #900;
+		stroke-width: 2px;
 	}
 	#links {
-		stroke: #AAB;
-		stroke-width: 1px;
+		stroke: #900;
+		stroke-width: 2px;
+		pointer-events: none;
+	}
+	#labels {
+		opacity: 1;
+		pointer-events: none;
+		.label {
+			fill: #446;
+			font-weight: 400;
+			text-shadow: -1px -1px 1px rgba(#FFF, 1), 1px 1px 1px rgba(#FFF, 1), -1px 1px 1px rgba(#FFF, 1), 1px -1px 1px rgba(#FFF, 1);
+		}
+	}
+}
+
+#hover {
+	display: none;
+	padding: 10px;
+	background: #f5f5fa;
+	border: 1px solid #BBC;
+	color: #333;
+	z-index: 1000;
+	opacity: 0.95;
+	position: absolute;
+	border-radius: 8px;
+	font-size: 16px;
+	font-weight: 100;
+
+	ul {
+		padding: 0 0 0 0;
+		li {
+			strong {
+				font-weight: 400;
+			}
+		}
+	}
+	h5 {
+		font-weight: 300;
+		padding-bottom: 0px;
+		color: #333;
 	}
 }

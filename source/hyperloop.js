@@ -16,6 +16,22 @@ Notes
 GDP and Population data sourced from 
 Bureau of Economic Analysis
 http://www.bea.gov/iTable/iTable.cfm?ReqID=9&step=1#reqid=9&step=1&isuri=1
+* Hanford MSA (25260) combined with Visalia (47300)
+* Visalia: GDP: 9880	GDP/Capita: 21992	Population: 449254
+* Hanford: GDP: 3602	GDP/Capita: 23425	Population: 153767
+* Combined: GDP: 13482	GDP/Capita: 22357	Population: 603021
+
+* Added Butte-Helena
+* Source: Wikipedia, Per capita income used instead of census GDP
+* Helena - FIPS: 30-35600	GDP: 1527	GDP/Capita: 20020	Population: 76277
+* Butte - FIPS: 30-11397	GDP: 572	GDP/Capita: 17068	Population: 33525
+* Combined: GDP: 2099	GDP/Capita: 19116	Population: 109802
+
+* Added Lake City
+* Source: Wikipedia, Per capita income used instead of census GDP
+* FIPS: 12-37775	GDP: 1221	GDP/Capita: 18083	Population: 67531
+
+* Need intersection at 222 and 76 Lancaster-Reading and Harrisburg-Philadelphia (PA)
 
 Latitude and Longitude data from Google Geocoding API
 https://developers.google.com/maps/documentation/geocoding/
@@ -123,6 +139,15 @@ dv.setup.variables = function() {
 	};
 
 	dv.console = function() {
+		var count = 0;
+		for (var i = dv.data.msa.length - 1; i >= 0; i--) {
+			var city = dv.data.msa[i];
+			if (city.Population >= 175000 && !city.Highway  && !(city.State === 'AK' || city.State === 'HI')) {
+				console.log(city.City +", "+city.State);
+				count++;
+			}
+		}
+		return count;
 	};
 };
 
@@ -148,6 +173,7 @@ dv.setup.withData = function() {
 	dv.draw.svg();
 	dv.draw.states();
 	dv.draw.cities();
+	dv.draw.hover();
 };
 
 dv.create.cities = function(name) {
@@ -230,10 +256,12 @@ dv.create.highways = function() {
 // in that same function, add to the dijkstra array: {fips: {fips: true, fips: true, etc...}, fips: {fips:true}}  if (!dij.source.target) { dij.source.target = true;} if (!dij.target.source) {dij.target.source = true;}
 dv.create.links = function() {
 	dv.data.links = [];
+	dv.index.network = {};
 	var highways = dv.data.highways,
 		hwyIndex = dv.index.highways,
 		msa = dv.index.msa,
 		links = dv.data.links,
+		network = dv.index.network,
 		source = {},
 		target = {},
 		i, i2, hwyNumber, highway, fips, fips2, city, city2;
@@ -249,19 +277,24 @@ dv.create.links = function() {
 			source = {geoLng: city.geoLng, geoLat: city.geoLat, fips: city.fips};
 			target = {geoLng: city2.geoLng, geoLat: city2.geoLat, fips: city2.fips};
 			links.push({source: source, target: target, Highway: hwyNumber});
+			network[fips] = network[fips] || {};
+			network[fips2] = network[fips2] || {};
+			if (!network[fips][fips2]) { network[fips][fips2] = 10; }
+			if (!network[fips2][fips]) { network[fips2][fips] = 10; }
 		}
 	}
 };
 
 // sorts the cities along a highway from north/south or east/west depending on the highway number 
 dv.sort.highway = function(hwyNumber, hwyCities) {
+	var msa = dv.index.msa;
 	if (hwyNumber%2 === 0) {
 		hwyCities.sort(function(a, b) {
-			return b.geoLng - a.geoLng;
+			return msa[b].geoLng - msa[a].geoLng;
 		});
 	} else {
 		hwyCities.sort(function(a, b) {
-			return b.geoLat - a.geoLat;
+			return msa[b].geoLat - msa[a].geoLat;
 		});
 	}
 	return hwyCities;
@@ -300,6 +333,10 @@ dv.create.scales = function() {
 	dv.scale.path = d3.geo.path()
 		.projection(dv.scale.projection)
 	;
+
+/*	dv.scale.population = d3.scale.linear
+		.domain(d3.extent(dv.))
+*/
 };
 
 dv.draw.svg = function() {
@@ -328,27 +365,40 @@ dv.draw.states = function() {
 };
 
 dv.draw.cities = function() {
+	dv.svg.links = dv.svg.map.append('svg:g')
+		.attr('id', 'links')
+		.selectAll('.link')
+			.data(dv.data.links)
+			.enter().append('svg:line')
+				.attr('class', 'link')
+				.attr('x1', function(d) { return dv.scale.projection([d.source.geoLng, d.source.geoLat])[0]; })
+				.attr('y1', function(d) { return dv.scale.projection([d.source.geoLng, d.source.geoLat])[1]; })
+				.attr('x2', function(d) { return dv.scale.projection([d.target.geoLng, d.target.geoLat])[0]; })
+				.attr('y2', function(d) { return dv.scale.projection([d.target.geoLng, d.target.geoLat])[1]; })
+	;
 
 	dv.svg.cities = dv.svg.map.append('svg:g')
 		.attr('id', 'cities')
 		.selectAll('.city')
 			.data(dv.data.msa)
 			.enter().append('svg:circle')
-				.attr('r', 5)
+				.attr('class', 'city')
+				.attr('r', function(d) { if (d.Population >= 175000) { return '5'; } else { return '3'; } })
 				.attr('cx', function(d) { return dv.scale.projection([d.geoLng, d.geoLat])[0]; })
 				.attr('cy', function(d) { return dv.scale.projection([d.geoLng, d.geoLat])[1]; })
-	;
-
-	dv.svg.links = dv.svg.map.append('svg:g')
-		.attr('id', 'links')
-		.selectAll('.link')
-			.data(dv.data.links)
-			.enter().append('svg:line')
-				.attr('x1', function(d) { return dv.scale.projection([d.source.geoLng, d.source.geoLat])[0]; })
-				.attr('y1', function(d) { return dv.scale.projection([d.source.geoLng, d.source.geoLat])[1]; })
-				.attr('x2', function(d) { return dv.scale.projection([d.target.geoLng, d.target.geoLat])[0]; })
-				.attr('y2', function(d) { return dv.scale.projection([d.target.geoLng, d.target.geoLat])[1]; })
-				.style('display', function(d) { if (d.Highway === '101') { return 'block'; } else { return 'none'; }})
+				.style('fill', function(d) {
+					if (d.State === 'HI' || d.State === 'AK') { return 'none'; }
+					else if (d.Population < 175000) {
+						if (!d.Highway) { return '#AAB'; } else { return false; }
+					} else {
+						if (!d.Highway) { return '#900'; } else { return false; }
+					}
+				})
+				.style('stroke', function(d) { if (!d.Highway) { return 'none'; } else { return false; } })
+				.style('stroke-width', function(d) { if (d.Population >= 175000) { return '2px'; } else { return '1px'; } })
+				//.style('display', function(d) { if (d.Population < 175000 && !d.Highway) { return 'none'; } else { return false; } })
+				.on('mouseover', function(d) { dv.update.showCityHover(event, d); })
+				.on('mouseout', dv.update.hideHover)
 	;
 
 	dv.svg.labels = dv.svg.map.append('svg:g')
@@ -356,10 +406,17 @@ dv.draw.cities = function() {
 		.selectAll('.label')
 			.data(dv.data.msa)
 			.enter().append('svg:text')
+				.attr('class', 'label')
 				.attr('dx', function(d) { return dv.scale.projection([d.geoLng, d.geoLat])[0] + 9; })
 				.attr('dy', function(d) { return dv.scale.projection([d.geoLng, d.geoLat])[1] + 5; })
-				.style('display', function(d) { if (d.Highway === '101') { return 'block'; } else { return 'none'; }})
-				.text(function(d) { return d.City + ' (' + d.FIPS + ')'; })
+				.style('display', function(d) { if (d.Population > 1000000) { return false; } else { return 'none'; }})
+				.text(function(d) { return d.City; })
+	;
+};
+
+dv.draw.hover = function() {
+	dv.svg.hover = d3.select('body').append('div')
+		.attr('id', 'hover')
 	;
 };
 
@@ -385,6 +442,30 @@ dv.update.locating = function(change) {
 		d3.select('body').append('div')
 			.html(csv);
 	}
+};
+
+dv.update.showCityHover = function(event, d) {
+	var html = '<h5>' + d.City + ', ' + d.State + '</h5><ul>';
+	html += '<li><strong>Population: </strong>' + d.Population + '</li>';
+	html += '<li><strong>GDP: </strong>' + d.GDP + '</li>';
+	html += '<li><strong>Highway(s): </strong>' + d.Highway + '</li>';
+	html += '<li><strong>FIPS: </strong>' + d.FIPS + '</li>';
+	html += '</ul>';
+	dv.update.showHover(event, html);
+};
+
+dv.update.showHover = function(event, html) {
+	dv.svg.hover
+		.style('top', event.pageY - 80 + 'px')
+		.style('left', (event.pageX + 20) + 'px')
+		.style('display', 'block')
+		.html(html)
+	;
+};
+
+dv.update.hideHover = function() {
+	dv.svg.hover.style('display', 'none');
+
 };
 
 dv.get.latlng = function() {

@@ -1,10 +1,44 @@
+ul, ol {
+  margin: 0;
+  list-style: none; }
+
 svg #states path {
   fill: none;
   stroke: #DDE;
   stroke-width: 1px; }
 svg #cities {
-  fill: #AAB;
-  opacity: 0.8; }
+  fill: #FFF;
+  stroke: #900;
+  stroke-width: 2px; }
 svg #links {
-  stroke: #AAB;
-  stroke-width: 1px; }
+  stroke: #900;
+  stroke-width: 2px;
+  pointer-events: none; }
+svg #labels {
+  opacity: 1;
+  pointer-events: none; }
+  svg #labels .label {
+    fill: #446;
+    font-weight: 400;
+    text-shadow: -1px -1px 1px white, 1px 1px 1px white, -1px 1px 1px white, 1px -1px 1px white; }
+
+#hover {
+  display: none;
+  padding: 10px;
+  background: #f5f5fa;
+  border: 1px solid #bbbbcc;
+  color: #333;
+  z-index: 1000;
+  opacity: 0.95;
+  position: absolute;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 100; }
+  #hover ul {
+    padding: 0 0 0 0; }
+    #hover ul li strong {
+      font-weight: 400; }
+  #hover h5 {
+    font-weight: 300;
+    padding-bottom: 0px;
+    color: #333; }
