@@ -19,7 +19,7 @@ svg #labels {
   pointer-events: none; }
   svg #labels .label {
     fill: #446;
-    font-weight: 400;
+    font-weight: 100;
     text-shadow: -1px -1px 1px white, 1px 1px 1px white, -1px 1px 1px white, 1px -1px 1px white; }
 
 #hover {

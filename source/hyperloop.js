@@ -123,8 +123,20 @@ dv.setup.variables = function() {
 			allstates: false,
 			exclude: {}
 		},
-		states: {
-			exclude: {'AK':true,'HI':true}
+		city: {
+			radius: {
+				min: 3,
+				max: 12
+			},
+			stroke: {
+				min: 1,
+				max: 2
+			},
+			font: {
+				min: 14,
+				max: 20
+			},
+			popmin: 1000000,
 		}
 	};
 	dv.dim.win = {
@@ -139,15 +151,6 @@ dv.setup.variables = function() {
 	};
 
 	dv.console = function() {
-		var count = 0;
-		for (var i = dv.data.msa.length - 1; i >= 0; i--) {
-			var city = dv.data.msa[i];
-			if (city.Population >= 175000 && !city.Highway  && !(city.State === 'AK' || city.State === 'HI')) {
-				console.log(city.City +", "+city.State);
-				count++;
-			}
-		}
-		return count;
 	};
 };
 
@@ -165,8 +168,7 @@ dv.setup.withoutData = function() {
 
 // setup that has to be done after the data is loaded, called from dv.update.loading
 dv.setup.withData = function() {
-	//dv.setup.compare();
-	dv.create.cities('cities');
+	dv.sort.cities({data: dv.data.msa, indexName: 'msa', col: dv.opt.cities.col, reverse: true});
 	dv.create.highways();
 	dv.create.links();
 	dv.create.scales();
@@ -174,44 +176,6 @@ dv.setup.withData = function() {
 	dv.draw.states();
 	dv.draw.cities();
 	dv.draw.hover();
-};
-
-dv.create.cities = function(name) {
-	dv.data[name] = [];
-	dv.index[name] = {};
-	var optCity = dv.opt.cities,
-		optState = dv.opt.states,
-		quant = optCity.quant,
-		cities = dv.data[name],
-		states = {},
-		i = 0,
-		msa = dv.data.msa,
-		index = dv.index[name],
-		sort = {data: dv.data.msa, indexName: 'msa', col: optCity.col, reverse: false},
-		fips, state;
-
-	dv.sort.cities(sort);
-
-	if (optCity.allstates) {
-		while (cities.length <= 47 && i < msa.length) {
-			fips = msa[i].FIPS;
-			state = msa[i].State;
-			if (!states[state] && !optState.exclude[state] && !optCity.exclude[fips]) {
-				states[state] = true;
-				index[fips] = cities.push(msa[i]) - 1;
-			}
-			i++;
-		}
-	}
-	i = 0;
-	while (cities.length < quant) {
-		fips = msa[i].FIPS;
-		state = msa[i].State;
-		if (!index[fips] && index[fips] !== 0 && !optState.exclude[state] && !optCity.exclude[fips]) {
-			index[fips] = cities.push(msa[i]) - 1;
-		}
-		i++;
-	}
 };
 
 // parses the highways column, adds cities to dv.data.highways in the order the appear on the highway
@@ -325,6 +289,8 @@ dv.sort.cities = function(opt) {
 
 dv.create.scales = function() {
 	var scale = dv.scale.map;
+	var city = dv.opt.city;
+	var populationExtent = d3.extent(dv.data.msa, function(d){ return parseInt(d.Population, 10); });
 	dv.scale.projection = d3.geo.albersUsa()
 		.scale(scale)
 		.translate([scale / 2.7, scale / 4.3])
@@ -334,9 +300,23 @@ dv.create.scales = function() {
 		.projection(dv.scale.projection)
 	;
 
-/*	dv.scale.population = d3.scale.linear
-		.domain(d3.extent(dv.))
-*/
+	dv.scale.r = d3.scale.pow()
+		.exponent(0.5)
+		.domain(populationExtent)
+		.rangeRound([city.radius.min, city.radius.max])
+	;
+
+	dv.scale.stroke = d3.scale.pow()
+		.exponent(0.5)
+		.domain(populationExtent)
+		.rangeRound([city.stroke.min, city.stroke.max])
+	;
+
+	dv.scale.font = d3.scale.pow()
+		.exponent(0.5)
+		.domain([city.popmin, populationExtent[1]])
+		.rangeRound([city.font.min, city.font.max])
+	;
 };
 
 dv.draw.svg = function() {
@@ -383,20 +363,12 @@ dv.draw.cities = function() {
 			.data(dv.data.msa)
 			.enter().append('svg:circle')
 				.attr('class', 'city')
-				.attr('r', function(d) { if (d.Population >= 175000) { return '5'; } else { return '3'; } })
+				.attr('r', function(d) { return dv.scale.r(d.Population); })
 				.attr('cx', function(d) { return dv.scale.projection([d.geoLng, d.geoLat])[0]; })
 				.attr('cy', function(d) { return dv.scale.projection([d.geoLng, d.geoLat])[1]; })
-				.style('fill', function(d) {
-					if (d.State === 'HI' || d.State === 'AK') { return 'none'; }
-					else if (d.Population < 175000) {
-						if (!d.Highway) { return '#AAB'; } else { return false; }
-					} else {
-						if (!d.Highway) { return '#900'; } else { return false; }
-					}
-				})
-				.style('stroke', function(d) { if (!d.Highway) { return 'none'; } else { return false; } })
-				.style('stroke-width', function(d) { if (d.Population >= 175000) { return '2px'; } else { return '1px'; } })
-				//.style('display', function(d) { if (d.Population < 175000 && !d.Highway) { return 'none'; } else { return false; } })
+				.style('fill', function(d) { if (dv.scale.stroke(d.Population) === 0) { return '#900'; } else { return false; } })
+				.style('stroke-width', function(d) { return dv.scale.stroke(d.Population); })
+				.style('display', function(d) { if (!d.Highway) { return 'none'; } else { return false; } })
 				.on('mouseover', function(d) { dv.update.showCityHover(event, d); })
 				.on('mouseout', dv.update.hideHover)
 	;
@@ -407,9 +379,10 @@ dv.draw.cities = function() {
 			.data(dv.data.msa)
 			.enter().append('svg:text')
 				.attr('class', 'label')
-				.attr('dx', function(d) { return dv.scale.projection([d.geoLng, d.geoLat])[0] + 9; })
-				.attr('dy', function(d) { return dv.scale.projection([d.geoLng, d.geoLat])[1] + 5; })
-				.style('display', function(d) { if (d.Population > 1000000) { return false; } else { return 'none'; }})
+				.attr('dx', function(d) { return dv.scale.projection([d.geoLng, d.geoLat])[0] + dv.scale.r(d.Population) + dv.scale.stroke(d.Population); })
+				.attr('dy', function(d) { return dv.scale.projection([d.geoLng, d.geoLat])[1] - 2; })
+				.style('display', function(d) { if (d.Population > dv.opt.city.popmin) { return false; } else { return 'none'; }})
+				.style('font-size', function(d) { return dv.scale.font(d.Population); })
 				.text(function(d) { return d.City; })
 	;
 };
