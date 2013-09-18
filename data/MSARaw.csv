@@ -1,0 +1,367 @@
+FIPS,MSANameFull,GDP,GDPPerCapita,Population,MSACity,MSAState,City,State
+35620,"New York-Northern New Jersey-Long Island, NY-NJ-PA",1123460,59080,19015911,New York-Northern New Jersey-Long Island,NY-NJ-PA,New York,NY
+31100,"Los Angeles-Long Beach-Santa Ana, CA",663054,51222,12944711,Los Angeles-Long Beach-Santa Ana,CA,Los Angeles,CA
+16980,"Chicago-Joliet-Naperville, IL-IN-WI",476487,50131,9504837,Chicago-Joliet-Naperville,IL-IN-WI,Chicago,IL
+19100,"Dallas-Fort Worth-Arlington, TX",351002,53781,6526506,Dallas-Fort Worth-Arlington,TX,Dallas,TX
+26420,"Houston-Sugar Land-Baytown, TX",365560,60060,6086580,Houston-Sugar Land-Baytown,TX,Houston,TX
+37980,"Philadelphia-Camden-Wilmington, PA-NJ-DE-MD",308377,51461,5992441,Philadelphia-Camden-Wilmington,PA-NJ-DE-MD,Philadelphia,PA
+47900,"Washington-Arlington-Alexandria, DC-VA-MD-WV",380714,66746,5703922,Washington-Arlington-Alexandria,DC-VA-MD-WV,Washington,DC
+33100,"Miami-Fort Lauderdale-Pompano Beach, FL",231361,40804,5670057,Miami-Fort Lauderdale-Pompano Beach,FL,Miami,FL
+12060,"Atlanta-Sandy Springs-Marietta, GA",249509,46557,5359216,Atlanta-Sandy Springs-Marietta,GA,Atlanta,GA
+14460,"Boston-Cambridge-Quincy, MA-NH",291017,63387,4591115,Boston-Cambridge-Quincy,MA-NH,Boston,MA
+41860,"San Francisco-Oakland-Fremont, CA",303371,69089,4391017,San Francisco-Oakland-Fremont,CA,San Francisco,CA
+40140,"Riverside-San Bernardino-Ontario, CA",96675,22456,4305086,Riverside-San Bernardino-Ontario,CA,Riverside,CA
+19820,"Detroit-Warren-Livonia, MI",175774,41013,4285812,Detroit-Warren-Livonia,MI,Detroit,MI
+38060,"Phoenix-Mesa-Glendale, AZ",173026,40586,4263194,Phoenix-Mesa-Glendale,AZ,Phoenix,AZ
+42660,"Seattle-Tacoma-Bellevue, WA",213393,60969,3500025,Seattle-Tacoma-Bellevue,WA,Seattle,WA
+33460,"Minneapolis-St. Paul-Bloomington, MN-WI",182059,54862,3318490,Minneapolis-St. Paul-Bloomington,MN-WI,Minneapolis,MN
+41740,"San Diego-Carlsbad-San Marcos, CA",152916,48698,3140088,San Diego-Carlsbad-San Marcos,CA,San Diego,CA
+45300,"Tampa-St. Petersburg-Clearwater, FL",102454,36270,2824759,Tampa-St. Petersburg-Clearwater,FL,Tampa,FL
+41180,"St. Louis, MO-IL",114072,40489,2817358,St. Louis,MO-IL,St. Louis,MO
+12580,"Baltimore-Towson, MD",129709,47528,2729107,Baltimore-Towson,MD,Baltimore,MD
+19740,"Denver-Aurora-Broomfield, CO",144296,55509,2599506,Denver-Aurora-Broomfield,CO,Denver,CO
+38300,"Pittsburgh, PA",101576,43045,2359763,Pittsburgh,PA,Pittsburgh,PA
+38900,"Portland-Vancouver-Hillsboro, OR-WA",140896,62272,2262590,Portland-Vancouver-Hillsboro,OR-WA,Portland,OR
+41700,"San Antonio-New Braunfels, TX",75397,34351,2194900,San Antonio-New Braunfels,TX,San Antonio,TX
+40900,"Sacramento-Arden-Arcade-Roseville, CA",82628,37969,2176196,Sacramento-Arden-Arcade-Roseville,CA,Sacramento,CA
+36740,"Orlando-Kissimmee-Sanford, FL",89948,41425,2171346,Orlando-Kissimmee-Sanford,FL,Orlando,FL
+17140,"Cincinnati-Middletown, OH-KY-IN",88492,41390,2138004,Cincinnati-Middletown,OH-KY-IN,Cincinnati,OH
+17460,"Cleveland-Elyria-Mentor, OH",92681,44811,2068264,Cleveland-Elyria-Mentor,OH,Cleveland,OH
+28140,"Kansas City, MO-KS",95470,46510,2052677,Kansas City,MO-KS,Kansas City,MO
+29820,"Las Vegas-Paradise, NV",81001,41118,1969964,Las Vegas-Paradise,NV,Las Vegas,NV
+41940,"San Jose-Sunnyvale-Santa Clara, CA",176446,94587,1865436,San Jose-Sunnyvale-Santa Clara,CA,San Jose,CA
+18140,"Columbus, OH",82313,44291,1858459,Columbus,OH,Columbus,OH
+16740,"Charlotte-Gastonia-Rock Hill, NC-SC",103662,57735,1795479,Charlotte-Gastonia-Rock Hill,NC-SC,Charlotte,NC
+12420,"Austin-Round Rock-San Marcos, TX",84842,47570,1783519,Austin-Round Rock-San Marcos,TX,Austin,TX
+26900,"Indianapolis-Carmel, IN",89832,50508,1778570,Indianapolis-Carmel,IN,Indianapolis,IN
+47260,"Virginia Beach-Norfolk-Newport News, VA-NC",70075,41714,1679892,Virginia Beach-Norfolk-Newport News,VA-NC,Virginia Beach,VA
+34980,"Nashville-Davidson-Murfreesboro-Franklin, TN",75968,46977,1617132,Nashville-Davidson-Murfreesboro-Franklin,TN,Nashville,TN
+39300,"Providence-New Bedford-Fall River, RI-MA",59338,37081,1600227,Providence-New Bedford-Fall River,RI-MA,Providence,RI
+33340,"Milwaukee-Waukesha-West Allis, WI",77283,49470,1562220,Milwaukee-Waukesha-West Allis,WI,Milwaukee,WI
+27260,"Jacksonville, FL",52966,38939,1360230,Jacksonville,FL,Jacksonville,FL
+32820,"Memphis, TN-MS-AR",55844,42127,1325611,Memphis,TN-MS-AR,Memphis,TN
+31140,"Louisville-Jefferson County, KY-IN",51634,39876,1294864,Louisville-Jefferson County,KY-IN,Louisville,KY
+36420,"Oklahoma City, OK",53509,41868,1278041,Oklahoma City,OK,Oklahoma City,OK
+40060,"Richmond, VA",57529,45321,1269367,Richmond,VA,Richmond,VA
+25540,"Hartford-West Hartford-East Hartford, CT",73258,60382,1213242,Hartford-West Hartford-East Hartford,CT,Hartford,CT
+35380,"New Orleans-Metairie-Kenner, LA",66768,56056,1191095,New Orleans-Metairie-Kenner,LA,New Orleans,LA
+39580,"Raleigh-Cary, NC",51903,44609,1163510,Raleigh-Cary,NC,Raleigh,NC
+41620,"Salt Lake City, UT",62595,54625,1145904,Salt Lake City,UT,Salt Lake City,UT
+15380,"Buffalo-Niagara Falls, NY",39774,35073,1134035,Buffalo-Niagara Falls,NY,Buffalo,NY
+13820,"Birmingham-Hoover, AL",46200,40804,1132242,Birmingham-Hoover,AL,Birmingham,AL
+40380,"Rochester, NY",40076,37976,1055298,Rochester,NY,Rochester,NY
+46060,"Tucson, AZ",28060,28356,989561,Tucson,AZ,Tucson,AZ
+26180,"Honolulu, HI",44983,46682,963605,Honolulu,HI,Honolulu,HI
+46140,"Tulsa, OK",40666,42944,946954,Tulsa,OK,Tulsa,OK
+23420,"Fresno, CA",26621,28232,942937,Fresno,CA,Fresno,CA
+14860,"Bridgeport-Stamford-Norwalk, CT",74869,80861,925898,Bridgeport-Stamford-Norwalk,CT,Bridgeport,CT
+10740,"Albuquerque, NM",34842,38772,898638,Albuquerque,NM,Albuquerque,NM
+36540,"Omaha-Council Bluffs, NE-IA",42341,48273,877116,Omaha-Council Bluffs,NE-IA,Omaha,NE
+10580,"Albany-Schenectady-Troy, NY",35299,40505,871473,Albany-Schenectady-Troy,NY,Albany,NY
+35300,"New Haven-Milford, CT",34390,39936,861128,New Haven-Milford,CT,New Haven,CT
+12540,"Bakersfield-Delano, CA",28265,33186,851715,Bakersfield-Delano,CA,Bakersfield,CA
+19380,"Dayton, OH",29744,35184,845384,Dayton,OH,Dayton,OH
+37100,"Oxnard-Thousand Oaks-Ventura, CA",33684,40496,831786,Oxnard-Thousand Oaks-Ventura,CA,Oxnard,CA
+10900,"Allentown-Bethlehem-Easton, PA-NJ",26194,31753,824930,Allentown-Bethlehem-Easton,PA-NJ,Allentown,PA
+21340,"El Paso, TX",24706,30100,820797,El Paso,TX,El Paso,TX
+12940,"Baton Rouge, LA",37644,46575,808245,Baton Rouge,LA,Baton Rouge,LA
+49340,"Worcester, MA",26834,33491,801230,Worcester,MA,Worcester,MA
+32580,"McAllen-Edinburg-Mission, TX",13252,16611,797785,McAllen-Edinburg-Mission,TX,McAllen,TX
+24340,"Grand Rapids-Wyoming, MI",29637,38016,779593,Grand Rapids-Wyoming,MI,Grand Rapids,MI
+17900,"Columbia, SC",27765,35728,777122,Columbia,SC,Columbia,SC
+24660,"Greensboro-High Point, NC",30725,42034,730956,Greensboro-High Point,NC,Greensboro,NC
+30780,"Little Rock-North Little Rock-Conway, AR",29080,40964,709892,Little Rock-North Little Rock-Conway,AR,Little Rock,AR
+35840,"North Port-Bradenton-Sarasota, FL",21056,29683,709362,North Port-Bradenton-Sarasota,FL,North Port,FL
+28940,"Knoxville, TN",28994,41155,704507,Knoxville,TN,Knoxville,TN
+10420,"Akron, OH",24259,34583,701472,Akron,OH,Akron,OH
+44700,"Stockton, CA",16861,24218,696218,Stockton,CA,Stockton,CA
+44140,"Springfield, MA",20135,29046,693211,Springfield,MA,Springfield,MA
+16700,"Charleston-North Charleston-Summerville, SC",25051,36725,682124,Charleston-North Charleston-Summerville,SC,Charleston,SC
+39100,"Poughkeepsie-Newburgh-Middletown, NY",20223,30054,672889,Poughkeepsie-Newburgh-Middletown,NY,Poughkeepsie,NY
+45060,"Syracuse, NY",23762,35865,662540,Syracuse,NY,Syracuse,NY
+17820,"Colorado Springs, CO",23907,36205,660323,Colorado Springs,CO,Colorado Springs,CO
+45780,"Toledo, OH",23939,36814,650269,Toledo,OH,Toledo,OH
+24860,"Greenville-Mauldin-Easley, SC",23667,36558,647382,Greenville-Mauldin-Easley,SC,Greenville,SC
+15980,"Cape Coral-Fort Myers, FL",17747,28111,631319,Cape Coral-Fort Myers,FL,Cape Coral,FL
+14260,"Boise City-Nampa, ID",25397,40463,627660,Boise City-Nampa,ID,Boise City,ID
+48620,"Wichita, KS",23875,38167,625540,Wichita,KS,Wichita,KS
+29460,"Lakeland-Winter Haven, FL",14396,23619,609509,Lakeland-Winter Haven,FL,Lakeland,FL
+19780,"Des Moines-West Des Moines, IA",35883,61840,580255,Des Moines-West Des Moines,IA,Des Moines,IA
+31540,"Madison, WI",32163,55794,576460,Madison,WI,Madison,WI
+42540,"Scranton-Wilkes-Barre, PA",17200,30538,563233,Scranton-Wilkes-Barre,PA,Scranton,PA
+49660,"Youngstown-Warren-Boardman, OH-PA",14714,26148,562720,Youngstown-Warren-Boardman,OH-PA,Youngstown,OH
+12260,"Augusta-Richmond County, GA-SC",16980,30221,561861,Augusta-Richmond County,GA-SC,Augusta,GA
+36260,"Ogden-Clearfield, UT",16621,29898,555923,Ogden-Clearfield,UT,Ogden,UT
+25420,"Harrisburg-Carlisle, PA",24784,44824,552918,Harrisburg-Carlisle,PA,Harrisburg,PA
+27140,"Jackson, MS",21602,39609,545381,Jackson,MS,Jackson,MS
+37340,"Palm Bay-Melbourne-Titusville, FL",17324,31871,543566,Palm Bay-Melbourne-Titusville,FL,Palm Bay,FL
+39340,"Provo-Orem, UT",14247,26343,540827,Provo-Orem,UT,Provo,UT
+16860,"Chattanooga, TN-GA",18990,35603,533382,Chattanooga,TN-GA,Chattanooga,TN
+29540,"Lancaster, PA",17399,33229,523609,Lancaster,PA,Lancaster,PA
+33700,"Modesto, CA",13181,25419,518549,Modesto,CA,Modesto,CA
+38860,"Portland-South Portland-Biddeford, ME",22713,44033,515818,Portland-South Portland-Biddeford,ME,Portland,ME
+20500,"Durham-Chapel Hill, NC",37407,72921,512980,Durham-Chapel Hill,NC,Durham,NC
+19660,"Deltona-Daytona Beach-Ormond Beach, FL",10335,20887,494805,Deltona-Daytona Beach-Ormond Beach,FL,Deltona,FL
+42220,"Santa Rosa-Petaluma, CA",18070,37019,488128,Santa Rosa-Petaluma,CA,Santa Rosa,CA
+49180,"Winston-Salem, NC",20214,41936,482020,Winston-Salem,NC,Winston,NC
+30460,"Lexington-Fayette, KY",20207,42165,479236,Lexington-Fayette,KY,Lexington,KY
+22220,"Fayetteville-Springdale-Rogers, AR-MO",17202,36305,473819,Fayetteville-Springdale-Rogers,AR-MO,Fayetteville,AR
+44060,"Spokane, WA",16291,34387,473755,Spokane,WA,Spokane,WA
+29620,"Lansing-East Lansing, MI",16825,36171,465152,Lansing-East Lansing,MI,Lansing,MI
+37860,"Pensacola-Ferry Pass-Brent, FL",12425,27416,453203,Pensacola-Ferry Pass-Brent,FL,Pensacola,FL
+47300,"Visalia-Porterville, CA",9880,21992,449254,Visalia-Porterville,CA,Visalia,CA
+44180,"Springfield, MO",13383,30406,440143,Springfield,MO,Springfield,MO
+49620,"York-Hanover, PA",13297,30445,436755,York-Hanover,PA,York,PA
+18580,"Corpus Christi, TX",16904,39186,431379,Corpus Christi,TX,Corpus Christi,TX
+39900,"Reno-Sparks, NV",17942,41764,429604,Reno-Sparks,NV,Reno,NV
+11700,"Asheville, NC",12535,29218,429016,Asheville,NC,Asheville,NC
+38940,"Port St. Lucie, FL",9617,22476,427879,Port St. Lucie,FL,Port St. Lucie,FL
+42060,"Santa Barbara-Santa Maria-Goleta, CA",17865,41851,426872,Santa Barbara-Santa Maria-Goleta,CA,Santa Barbara,CA
+26620,"Huntsville, AL",19206,45140,425476,Huntsville,AL,Huntsville,AL
+22420,"Flint, MI",10173,24101,422099,Flint,MI,Flint,MI
+41500,"Salinas, CA",14568,34530,421894,Salinas,CA,Salinas,CA
+23060,"Fort Wayne, IN",16417,39139,419454,Fort Wayne,IN,Fort Wayne,IN
+46700,"Vallejo-Fairfield, CA",12136,29139,416486,Vallejo-Fairfield,CA,Vallejo,CA
+15180,"Brownsville-Harlingen, TX",7031,16978,414124,Brownsville-Harlingen,TX,Brownsville,TX
+39740,"Reading, PA",12660,30669,412795,Reading,PA,Reading,PA
+33660,"Mobile, AL",14405,34914,412585,Mobile,AL,Mobile,AL
+28660,"Killeen-Temple-Fort Hood, TX",13723,33342,411583,Killeen-Temple-Fort Hood,TX,Killeen,TX
+15940,"Canton-Massillon, OH",11322,28033,403881,Canton-Massillon,OH,Canton,OH
+43340,"Shreveport-Bossier City, LA",19426,48132,403598,Shreveport-Bossier City,LA,Shreveport,LA
+31700,"Manchester-Nashua, NH",20647,51399,401700,Manchester-Nashua,NH,Manchester,NH
+41420,"Salem, OR",10852,27483,394862,Salem,OR,Salem,OR
+13140,"Beaumont-Port Arthur, TX",17829,45654,390524,Beaumont-Port Arthur,TX,Beaumont,TX
+11260,"Anchorage, AK",24375,62901,387514,Anchorage,AK,Anchorage,AK
+19340,"Davenport-Moline-Rock Island, IA-IL",15755,41316,381329,Davenport-Moline-Rock Island,IA-IL,Davenport,IA
+37900,"Peoria, IL",17447,45966,379563,Peoria,IL,Peoria,IL
+33860,"Montgomery, AL",12864,33976,378620,Montgomery,AL,Montgomery,AL
+22180,"Fayetteville, NC",15462,41325,374156,Fayetteville,NC,Fayetteville,NC
+45220,"Tallahassee, FL",11619,31424,369749,Tallahassee,FL,Tallahassee,FL
+48900,"Wilmington, NC",12534,33905,369680,Wilmington,NC,Wilmington,NC
+45940,"Trenton-Ewing, NJ",23400,63750,367059,Trenton-Ewing,NJ,Trenton,NJ
+25860,"Hickory-Lenoir-Morganton, NC",10416,28571,364565,Hickory-Lenoir-Morganton,NC,Hickory,NC
+21780,"Evansville, IN-KY",14302,39740,359889,Evansville,IN-KY,Evansville,IN
+42340,"Savannah, GA",11560,32512,355561,Savannah,GA,Savannah,GA
+21660,"Eugene-Springfield, OR",10787,30523,353406,Eugene-Springfield,OR,Eugene,OR
+40420,"Rockford, IL",11340,32553,348355,Rockford,IL,Rockford,IL
+11460,"Ann Arbor, MI",16434,47228,347972,Ann Arbor,MI,Ann Arbor,MI
+36100,"Ocala, FL",6277,18877,332521,Ocala,FL,Ocala,FL
+28020,"Kalamazoo-Portage, MI",10677,32531,328210,Kalamazoo-Portage,MI,Kalamazoo,MI
+34940,"Naples-Marco Island, FL",11687,35617,328130,Naples-Marco Island,FL,Naples,FL
+43780,"South Bend-Mishawaka, IN-MI",11072,34741,318701,South Bend-Mishawaka,IN-MI,South Bend,IN
+28700,"Kingsport-Bristol-Bristol, TN-VA",8764,28289,309802,Kingsport-Bristol-Bristol,TN-VA,Kingsport,TN
+24580,"Green Bay, WI",13155,42508,309471,Green Bay,WI,Green Bay,WI
+40220,"Roanoke, VA",11548,37391,308844,Roanoke,VA,Roanoke,VA
+30700,"Lincoln, NE",12865,41973,306507,Lincoln,NE,Lincoln,NE
+22660,"Fort Collins-Loveland, CO",10847,35501,305541,Fort Collins-Loveland,CO,Fort Collins,CO
+16620,"Charleston, WV",13060,43008,303664,Charleston,WV,Charleston,WV
+17980,"Columbus, GA-AL",10895,36143,301441,Columbus,GA-AL,Columbus,GA
+22900,"Fort Smith, AR-OK",8485,28276,300078,Fort Smith,AR-OK,Fort Smith,AR
+14500,"Boulder, CO",17866,59676,299383,Boulder,CO,Boulder,CO
+46540,"Utica-Rome, NY",8017,26861,298462,Utica-Rome,NY,Utica,NY
+31180,"Lubbock, TX",9189,31685,290011,Lubbock,TX,Lubbock,TX
+26580,"Huntington-Ashland, WV-KY-OH",8863,30819,287582,Huntington-Ashland,WV-KY-OH,Huntington,WV
+43900,"Spartanburg, SC",9177,31991,286862,Spartanburg,SC,Spartanburg,SC
+21500,"Erie, PA",8267,29420,280999,Erie,PA,Erie,PA
+20260,"Duluth, MN-WI",8483,30316,279819,Duluth,MN-WI,Duluth,MN
+17300,"Clarksville, TN-KY",9648,34744,277688,Clarksville,TN-KY,Clarksville,TN
+29180,"Lafayette, LA",18248,65805,277304,Lafayette,LA,Lafayette,LA
+34820,"Myrtle Beach-North Myrtle Beach-Conway, SC",8551,30943,276347,Myrtle Beach-North Myrtle Beach-Conway,SC,Myrtle Beach,SC
+12100,"Atlantic City-Hammonton, NJ",11298,41182,274343,Atlantic City-Hammonton,NJ,Atlantic City,NJ
+35980,"Norwich-New London, CT",11311,41356,273503,Norwich-New London,CT,Norwich,CT
+42020,"San Luis Obispo-Paso Robles, CA",9288,34149,271985,San Luis Obispo-Paso Robles,CA,San Luis Obispo,CA
+25180,"Hagerstown-Martinsburg, MD-WV",7180,26447,271486,Hagerstown-Martinsburg,MD-WV,Hagerstown,MD
+23540,"Gainesville, FL",9012,33831,266383,Gainesville,FL,Gainesville,FL
+26100,"Holland-Grand Haven, MI",7856,29501,266296,Holland-Grand Haven,MI,Holland,MI
+42100,"Santa Cruz-Watsonville, CA",8174,30928,264291,Santa Cruz-Watsonville,CA,Santa Cruz,CA
+28420,"Kennewick-Pasco-Richland, WA",9375,35495,264122,Kennewick-Pasco-Richland,WA,Kennewick,WA
+16300,"Cedar Rapids, IA",13348,51227,260566,Cedar Rapids,IA,Cedar Rapids,IA
+32900,"Merced, CA",5132,19747,259888,Merced,CA,Merced,CA
+24540,"Greeley, CO",6495,25111,258652,Greeley,CO,Greeley,CO
+36500,"Olympia, WA",7708,30041,256583,Olympia,WA,Olympia,WA
+29700,"Laredo, TX",5694,22198,256510,Laredo,TX,Laredo,TX
+14740,"Bremerton-Silverdale, WA",7719,30315,254626,Bremerton-Silverdale,WA,Bremerton,WA
+31340,"Lynchburg, VA",7440,29271,254176,Lynchburg,VA,Lynchburg,VA
+11100,"Amarillo, TX",8815,34730,253815,Amarillo,TX,Amarillo,TX
+25060,"Gulfport-Biloxi, MS",9065,35759,253503,Gulfport-Biloxi,MS,Gulfport,MS
+13780,"Binghamton, NY",7743,30964,250065,Binghamton,NY,Binghamton,NY
+49420,"Yakima, WA",6435,26039,247129,Yakima,WA,Yakima,WA
+47380,"Waco, TX",7712,32327,238562,Waco,TX,Waco,TX
+45820,"Topeka, KS",8124,34621,234655,Topeka,KS,Topeka,KS
+31420,"Macon, GA",6804,29211,232926,Macon,GA,Macon,GA
+43620,"Sioux Falls, SD",13974,60121,232431,Sioux Falls,SD,Sioux Falls,SD
+16580,"Champaign-Urbana, IL",7972,34311,232345,Champaign-Urbana,IL,Champaign,IL
+17780,"College Station-Bryan, TX",6169,26633,231630,College Station-Bryan,TX,College Station,TX
+11540,"Appleton, WI",8784,38628,227400,Appleton,WI,Appleton,WI
+46220,"Tuscaloosa, AL",7414,33465,221545,Tuscaloosa,AL,Tuscaloosa,AL
+17020,"Chico, CA",5298,24052,220273,Chico,CA,Chico,CA
+30980,"Longview, TX",9356,43183,216659,Longview,TX,Longview,TX
+12700,"Barnstable Town, MA",7215,33440,215760,Barnstable Town,MA,Barnstable Town,MA
+29740,"Las Cruces, NM",5018,23492,213605,Las Cruces,NM,Las Cruces,NM
+46340,"Tyler, TX",8266,38740,213371,Tyler,TX,Tyler,TX
+15540,"Burlington-South Burlington, VT",10040,47240,212532,Burlington-South Burlington,VT,Burlington,VT
+22020,"Fargo, ND-MN",10868,51223,212170,Fargo,ND-MN,Fargo,ND
+39140,"Prescott, AZ",3708,17500,211886,Prescott,AZ,Prescott,AZ
+44100,"Springfield, IL",8537,40355,211548,Springfield,IL,Springfield,IL
+26380,"Houma-Bayou Cane-Thibodaux, LA",9860,47271,208585,Houma-Bayou Cane-Thibodaux,LA,Houma,LA
+22500,"Florence, SC",6086,29519,206172,Florence,SC,Florence,SC
+32780,"Medford, OR",5444,26579,204823,Medford,OR,Medford,OR
+16820,"Charlottesville, VA",8691,42630,203871,Charlottesville,VA,Charlottesville,VA
+13380,"Bellingham, WA",8507,41771,203658,Bellingham,WA,Bellingham,WA
+29140,"Lafayette, IN",7242,35570,203599,Lafayette,IN,Lafayette,IN
+29420,"Lake Havasu City-Kingman, AZ",3180,15716,202342,Lake Havasu City-Kingman,AZ,Lake Havasu City,AZ
+49740,"Yuma, AZ",4412,21966,200856,Yuma,AZ,Yuma,AZ
+29340,"Lake Charles, LA",12204,60769,200826,Lake Charles,LA,Lake Charles,LA
+27740,"Johnson City, TN",5709,28570,199825,Johnson City,TN,Johnson City,TN
+40980,"Saginaw-Saginaw Township North, MI",6040,30336,199103,Saginaw-Saginaw Township North,MI,Saginaw,MI
+21140,"Elkhart-Goshen, IN",8296,41699,198950,Elkhart-Goshen,IN,Elkhart,IN
+39540,"Racine, WI",5821,29790,195401,Racine,WI,Racine,WI
+14020,"Bloomington, IN",5402,27815,194212,Bloomington,IN,Bloomington,IN
+12020,"Athens-Clarke County, GA",5704,29506,193317,Athens-Clarke County,GA,Athens,GA
+24780,"Greenville, NC",5721,29692,192678,Greenville,NC,Greenville,NC
+41060,"St. Cloud, MN",6639,34939,190017,St. Cloud,MN,St. Cloud,MN
+11340,"Anderson, SC",4106,21784,188487,Anderson,SC,Anderson,SC
+40340,"Rochester, MN",8504,45325,187623,Rochester,MN,Rochester,MN
+18880,"Crestview-Fort Walton Beach-Destin, FL",8457,46089,183493,Crestview-Fort Walton Beach-Destin,FL,Crestview,FL
+23580,"Gainesville, GA",5783,31591,183058,Gainesville,GA,Gainesville,GA
+28740,"Kingston, NY",4096,22449,182458,Kingston,NY,Kingston,NY
+27340,"Jacksonville, NC",7328,40773,179727,Jacksonville,NC,Jacksonville,NC
+39820,"Redding, CA",4355,24495,177791,Redding,CA,Redding,CA
+33740,"Monroe, LA",5656,31840,177638,Monroe,LA,Monroe,LA
+20940,"El Centro, CA",3878,21904,177045,El Centro,CA,El Centro,CA
+27900,"Joplin, MO",5153,29139,176842,Joplin,MO,Joplin,MO
+17860,"Columbia, MO",5951,33845,175831,Columbia,MO,Columbia,MO
+45460,"Terre Haute, IN",4975,28814,172659,Terre Haute,IN,Terre Haute,IN
+34740,"Muskegon-Norton Shores, MI",4194,24484,171296,Muskegon-Norton Shores,MI,Muskegon,MI
+14060,"Bloomington-Normal, IL",8239,48309,170548,Bloomington-Normal,IL,Bloomington,IL
+37460,"Panama City-Lynn Haven-Panama City Beach, FL",5628,33134,169856,Panama City-Lynn Haven-Panama City Beach,FL,Panama City,FL
+47940,"Waterloo-Cedar Falls, IA",7404,43996,168288,Waterloo-Cedar Falls,IA,Waterloo,IA
+36780,"Oshkosh-Neenah, WI",7051,42045,167701,Oshkosh-Neenah,WI,Oshkosh,WI
+49700,"Yuba City, CA",3958,23632,167485,Yuba City,CA,Yuba City,CA
+10180,"Abilene, TX",4831,29032,166403,Abilene,TX,Abilene,TX
+20100,"Dover, DE",5267,31954,164831,Dover,DE,Dover,DE
+37700,"Pascagoula, MS",5291,32501,162795,Pascagoula,MS,Pascagoula,MS
+20740,"Eau Claire, WI",5763,35431,162654,Eau Claire,WI,Eau Claire,WI
+13980,"Blacksburg-Christiansburg-Radford, VA",4358,26823,162473,Blacksburg-Christiansburg-Radford,VA,Blacksburg,VA
+37620,"Parkersburg-Marietta-Vienna, WV-OH",4778,29446,162263,Parkersburg-Marietta-Vienna,WV-OH,Parkersburg,WV
+39380,"Pueblo, CO",3645,22702,160559,Pueblo,CO,Pueblo,CO
+39460,"Punta Gorda, FL",2863,17839,160491,Punta Gorda,FL,Punta Gorda,FL
+13460,"Bend, OR",5360,33431,160330,Bend,OR,Bend,OR
+13740,"Billings, MT",6424,40124,160104,Billings,MT,Billings,MT
+27500,"Janesville, WI",4347,27152,160099,Janesville,WI,Janesville,WI
+27100,"Jackson, MI",4225,26446,159760,Jackson,MI,Jackson,MI
+10500,"Albany, GA",4168,26429,157706,Albany,GA,Albany,GA
+47220,"Vineland-Millville-Bridgeton, NJ",4373,27839,157082,Vineland-Millville-Bridgeton,NJ,Vineland,NJ
+35660,"Niles-Benton Harbor, MI",4737,30185,156932,Niles-Benton Harbor,MI,Niles,MI
+26980,"Iowa City, IA",6831,44104,154884,Iowa City,IA,Iowa City,IA
+44300,"State College, PA",5486,35455,154731,State College,PA,State College,PA
+10780,"Alexandria, LA",4647,30079,154493,Alexandria,LA,Alexandria,LA
+19460,"Decatur, AL",4118,26730,154059,Decatur,AL,Decatur,AL
+12620,"Bangor, ME",4697,30545,153773,Bangor,ME,Bangor,ME
+25260,"Hanford-Corcoran, CA",3602,23425,153767,Hanford-Corcoran,CA,Hanford,CA
+15500,"Burlington, NC",4127,26925,153278,Burlington,NC,Burlington,NC
+31460,"Madera-Chowchilla, CA",3251,21258,152931,Madera-Chowchilla,CA,Madera,CA
+40580,"Rocky Mount, NC",5122,33663,152155,Rocky Mount,NC,Rocky Mount,NC
+33780,"Monroe, MI",3207,21159,151567,Monroe,MI,Monroe,MI
+27620,"Jefferson City, MO",5035,33460,150478,Jefferson City,MO,Jefferson City,MO
+48660,"Wichita Falls, TX",5118,34061,150260,Wichita Falls,TX,Wichita Falls,TX
+22520,"Florence-Muscle Shoals, AL",3538,24021,147288,Florence-Muscle Shoals,AL,Florence,AL
+48540,"Wheeling, WV-OH",4709,31992,147193,Wheeling,WV-OH,Wheeling,WV
+24300,"Grand Junction, CO",4396,29887,147087,Grand Junction,CO,Grand Junction,CO
+20020,"Dothan, AL",3889,26534,146567,Dothan,AL,Dothan,AL
+42140,"Santa Fe, NM",5505,37797,145646,Santa Fe,NM,Santa Fe,NM
+25620,"Hattiesburg, MS",4331,29778,145443,Hattiesburg,MS,Hattiesburg,MS
+43580,"Sioux City, IA-NE-SD",5334,37024,144069,Sioux City,IA-NE-SD,Sioux City,IA
+47580,"Warner Robins, GA",4835,33596,143916,Warner Robins,GA,Warner Robins,GA
+27780,"Johnstown, PA",3471,24149,143733,Johnstown,PA,Johnstown,PA
+12220,"Auburn-Opelika, AL",3380,23562,143451,Auburn-Opelika,AL,Auburn,AL
+19140,"Dalton, GA",4600,32225,142746,Dalton,GA,Dalton,GA
+46660,"Valdosta, GA",3773,26515,142297,Valdosta,GA,Valdosta,GA
+41100,"St. George, UT",3133,22116,141662,St. George,UT,St. George,UT
+17660,"Coeur d'Alene, ID",3809,26989,141132,Coeur d'Alene,ID,Coeur d'Alene,ID
+33260,"Midland, TX",13404,95531,140310,Midland,TX,Midland,TX
+36220,"Odessa, TX",6078,43381,140107,Odessa,TX,Odessa,TX
+42680,"Sebastian-Vero Beach, FL",3541,25492,138906,Sebastian-Vero Beach,FL,Sebastian,FL
+34900,"Napa, CA",5868,42492,138097,Napa,CA,Napa,CA
+44220,"Springfield, OH",3086,22415,137676,Springfield,OH,Springfield,OH
+34100,"Morristown, TN",3090,22473,137498,Morristown,TN,Morristown,TN
+45500,"Texarkana, TX-AR",4016,29407,136566,Texarkana,TX-AR,Texarkana,TX
+12980,"Battle Creek, MI",4133,30504,135490,Battle Creek,MI,Battle Creek,MI
+22380,"Flagstaff, AZ",4198,31210,134508,Flagstaff,AZ,Flagstaff,AZ
+29100,"La Crosse, WI-MN",5028,37384,134496,La Crosse,WI-MN,La Crosse,WI
+48140,"Wausau, WI",5069,37717,134396,Wausau,WI,Wausau,WI
+30140,"Lebanon, PA",3423,25482,134330,Lebanon,PA,Lebanon,PA
+34060,"Morgantown, WV",5291,40005,132258,Morgantown,WV,Morgantown,WV
+26820,"Idaho Falls, ID",3576,27078,132063,Idaho Falls,ID,Idaho Falls,ID
+11300,"Anderson, IN",2749,20947,131236,Anderson,IN,Anderson,IN
+38340,"Pittsfield, MA",4597,35241,130445,Pittsfield,MA,Pittsfield,MA
+31740,"Manhattan, KS",5499,42220,130246,Manhattan,KS,Manhattan,KS
+49020,"Winchester, VA-WV",4545,34941,130076,Winchester,VA-WV,Winchester,VA
+24020,"Glens Falls, NY",3528,27347,129009,Glens Falls,NY,Glens Falls,NY
+39660,"Rapid City, SD",4460,34742,128375,Rapid City,SD,Rapid City,SD
+22140,"Farmington, NM",4945,38570,128208,Farmington,NM,Farmington,NM
+14540,"Bowling Green, KY",3902,30582,127591,Bowling Green,KY,Bowling Green,KY
+41140,"St. Joseph, MO-KS",3981,31205,127576,St. Joseph,MO-KS,St. Joseph,MO
+30860,"Logan, UT-ID",3253,25503,127554,Logan,UT-ID,Logan,UT
+11020,"Altoona, PA",3682,28969,127101,Altoona,PA,Altoona,PA
+25500,"Harrisonburg, VA",5513,43560,126561,Harrisonburg,VA,Harrisonburg,VA
+30020,"Lawton, OK",4154,33019,125806,Lawton,OK,Lawton,OK
+41540,"Salisbury, MD",3616,28806,125529,Salisbury,MD,Salisbury,MD
+24140,"Goldsboro, NC",3555,28740,123695,Goldsboro,NC,Goldsboro,NC
+31900,"Mansfield, OH",3200,25911,123500,Mansfield,OH,Mansfield,OH
+44600,"Steubenville-Weirton, OH-WV",2814,22835,123232,Steubenville-Weirton,OH-WV,Steubenville,OH
+27860,"Jonesboro, AR",3747,30503,122840,Jonesboro,AR,Jonesboro,AR
+21060,"Elizabethtown, KY",4860,39915,121759,Elizabethtown,KY,Elizabethtown,KY
+43300,"Sherman-Denison, TX",3324,27375,121425,Sherman-Denison,TX,Sherman,TX
+34580,"Mount Vernon-Anacortes, WA",5035,42627,118118,Mount Vernon-Anacortes,WA,Mount Vernon,WA
+11500,"Anniston-Oxford, AL",3196,27133,117790,Anniston-Oxford,AL,Anniston,AL
+34620,"Muncie, IN",3017,25639,117672,Muncie,IN,Muncie,IN
+17420,"Cleveland, TN",3064,26228,116822,Cleveland,TN,Cleveland,TN
+48700,"Williamsport, PA",3611,30927,116759,Williamsport,PA,Williamsport,PA
+47020,"Victoria, TX",5136,44185,116239,Victoria,TX,Victoria,TX
+27180,"Jackson, TN",4188,36291,115401,Jackson,TN,Jackson,TN
+36980,"Owensboro, KY",3844,33331,115328,Owensboro,KY,Owensboro,KY
+43100,"Sheboygan, WI",4544,39461,115152,Sheboygan,WI,Sheboygan,WI
+28100,"Kankakee-Bradley, IL",2759,24266,113698,Kankakee-Bradley,IL,Kankakee,IL
+41660,"San Angelo, TX",3468,30567,113456,San Angelo,TX,San Angelo,TX
+15260,"Brunswick, GA",2812,24898,112941,Brunswick,GA,Brunswick,GA
+48300,"Wenatchee-East Wenatchee, WA",3107,27631,112446,Wenatchee-East Wenatchee,WA,Wenatchee,WA
+29940,"Lawrence, KS",3083,27471,112227,Lawrence,KS,Lawrence,KS
+33140,"Michigan City-La Porte, IN",3124,28054,111357,Michigan City-La Porte,IN,Michigan City,IN
+13900,"Bismarck, ND",4634,41789,110890,Bismarck,ND,Bismarck,ND
+19500,"Decatur, IL",4808,43419,110735,Decatur,IL,Decatur,IL
+33540,"Missoula, MT",3849,34945,110145,Missoula,MT,Missoula,MT
+44940,"Sumter, SC",2779,25861,107459,Sumter,SC,Sumter,SC
+30340,"Lewiston-Auburn, ME",3305,30776,107389,Lewiston-Auburn,ME,Lewiston,ME
+13020,"Bay City, MI",2533,23645,107126,Bay City,MI,Bay City,MI
+30620,"Lima, OH",3992,37627,106094,Lima,OH,Lima,OH
+19260,"Danville, VA",2577,24382,105693,Danville,VA,Danville,VA
+23460,"Gadsden, AL",2279,21845,104326,Gadsden,AL,Gadsden,AL
+19060,"Cumberland, MD-WV",2358,22916,102898,Cumberland,MD-WV,Cumberland,MD
+31020,"Longview, WA",2638,25742,102478,Longview,WA,Longview,WA
+22540,"Fond du Lac, WI",3262,31960,102065,Fond du Lac,WI,Fond du Lac,WI
+27060,"Ithaca, NY",3284,32282,101729,Ithaca,NY,Ithaca,NY
+21820,"Fairbanks, AK",4355,43904,99194,Fairbanks,AK,Fairbanks,AK
+38220,"Pine Bluff, AR",2623,26514,98929,Pine Bluff,AR,Pine Bluff,AR
+29020,"Kokomo, IN",3372,34205,98582,Kokomo,IN,Kokomo,IN
+24220,"Grand Forks, ND-MN",3551,36215,98053,Grand Forks,ND-MN,Grand Forks,ND
+37380,"Palm Coast, FL",1101,11311,97339,Palm Coast,FL,Palm Coast,FL
+31860,"Mankato-North Mankato, MN",3505,36059,97202,Mankato-North Mankato,MN,Mankato,MN
+26300,"Hot Springs, AR",2373,24435,97115,Hot Springs,AR,Hot Springs,AR
+16020,"Cape Girardeau-Jackson, MO-IL",3052,31457,97021,Cape Girardeau-Jackson,MO-IL,Cape Girardeau,MO
+36140,"Ocean City, NJ",3506,36295,96597,Ocean City,NJ,Ocean City,NJ
+40660,"Rome, GA",2731,28446,96006,Rome,GA,Rome,GA
+20220,"Dubuque, IA",4276,45175,94654,Dubuque,IA,Dubuque,IA
+16940,"Cheyenne, WY",4354,46974,92690,Cheyenne,WY,Cheyenne,WY
+38540,"Pocatello, ID",2449,26773,91473,Pocatello,ID,Pocatello,ID
+11180,"Ames, IA",3613,40297,89659,Ames,IA,Ames,IA
+21300,"Elmira, NY",2605,29324,88835,Elmira,NY,Elmira,NY
+18700,"Corvallis, OR",5743,66835,85928,Corvallis,OR,Corvallis,OR
+24500,"Great Falls, MT",2644,32314,81822,Great Falls,MT,Great Falls,MT
+19180,"Danville, IL",2102,25790,81504,Danville,IL,Danville,IL
+25980,"Hinesville-Fort Stewart, GA",3242,40225,80597,Hinesville-Fort Stewart,GA,Hinesville,GA
+18020,"Columbus, IN",4134,53082,77880,Columbus,IN,Columbus,IN
+41780,"Sandusky, OH",2672,34812,76755,Sandusky,OH,Sandusky,OH
+16220,"Casper, WY",5995,78510,76360,Casper,WY,Casper,WY
+30300,"Lewiston, ID-WA",1733,28187,61482,Lewiston,ID-WA,Lewiston,ID
+16180,"Carson City, NV",2378,42897,55435,Carson City,NV,Carson City,NV

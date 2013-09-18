@@ -16,20 +16,30 @@ Notes
 GDP and Population data sourced from 
 Bureau of Economic Analysis
 http://www.bea.gov/iTable/iTable.cfm?ReqID=9&step=1#reqid=9&step=1&isuri=1
+
 * Hanford MSA (25260) combined with Visalia (47300)
-* Visalia: GDP: 9880	GDP/Capita: 21992	Population: 449254
-* Hanford: GDP: 3602	GDP/Capita: 23425	Population: 153767
-* Combined: GDP: 13482	GDP/Capita: 22357	Population: 603021
+* Visalia: Population: 449254
+* Hanford: Population: 153767
+* Combined:	Population: 603021
 
-* Added Butte-Helena
-* Source: Wikipedia, Per capita income used instead of census GDP
-* Helena - FIPS: 30-35600	GDP: 1527	GDP/Capita: 20020	Population: 76277
-* Butte - FIPS: 30-11397	GDP: 572	GDP/Capita: 17068	Population: 33525
-* Combined: GDP: 2099	GDP/Capita: 19116	Population: 109802
+* Butte-Helena, MT
+* Source: Wikipedia
+* Helena - FIPS: 30-35600	Population: 76277
+* Butte - FIPS: 30-11397	Population: 33525
+* Combined: Population: 109802
 
-* Added Lake City
-* Source: Wikipedia, Per capita income used instead of census GDP
-* FIPS: 12-37775	GDP: 1221	GDP/Capita: 18083	Population: 67531
+
+* Cities Added
+* Source: Wikipedia
+37775	Lake City, FL	67531
+99996	Montreal, Canada	3824221
+99995	Toronto, Canada	5583064
+99994	Winnipeg, Canada	730018
+99993	Calgary, Canada	1214839
+99992	Edmonton, Canada	1159869
+99991	Vancouver, Canada	2313328
+
+
 
 * Need intersection at 222 and 76 Lancaster-Reading and Harrisburg-Philadelphia (PA)
 
@@ -114,8 +124,8 @@ var dv = {
 dv.setup.variables = function() {
 	dv.opt = {
 		path: {
-			raw: 'data/MSA.csv',
-			data: 'data/MSALatLng.csv'
+			raw: 'data/MSARaw.csv',
+			data: 'data/MSA.csv'
 		},
 		cities: {
 			quant: 50,
@@ -147,7 +157,7 @@ dv.setup.variables = function() {
 	dv.scale.map = dv.dim.win.w * 1.34;
 	dv.dim.svg = {
 		w: dv.dim.win.w,
-		h: dv.dim.win.w * 0.63
+		h: dv.dim.win.w
 	};
 
 	dv.console = function() {
@@ -288,12 +298,13 @@ dv.sort.cities = function(opt) {
 };
 
 dv.create.scales = function() {
-	var scale = dv.scale.map;
-	var city = dv.opt.city;
-	var populationExtent = d3.extent(dv.data.msa, function(d){ return parseInt(d.Population, 10); });
-	dv.scale.projection = d3.geo.albersUsa()
+	var scale = dv.scale.map,
+		city = dv.opt.city,
+		populationExtent = d3.extent(dv.data.msa, function(d){ return parseInt(d.Population, 10); });
+
+	dv.scale.projection = d3.geo.albers()
 		.scale(scale)
-		.translate([scale / 2.7, scale / 4.3])
+		.translate([scale / 2.7, scale / 3.5])
 	;
 
 	dv.scale.path = d3.geo.path()
@@ -368,7 +379,7 @@ dv.draw.cities = function() {
 				.attr('cy', function(d) { return dv.scale.projection([d.geoLng, d.geoLat])[1]; })
 				.style('fill', function(d) { if (dv.scale.stroke(d.Population) === 0) { return '#900'; } else { return false; } })
 				.style('stroke-width', function(d) { return dv.scale.stroke(d.Population); })
-				.style('display', function(d) { if (!d.Highway) { return 'none'; } else { return false; } })
+				.style('display', function(d) { if (!d.Highway || d.City === 'Junction') { return 'none'; } else { return false; } })
 				.on('mouseover', function(d) { dv.update.showCityHover(event, d); })
 				.on('mouseout', dv.update.hideHover)
 	;
@@ -382,6 +393,7 @@ dv.draw.cities = function() {
 				.attr('dx', function(d) { return dv.scale.projection([d.geoLng, d.geoLat])[0] + dv.scale.r(d.Population) + dv.scale.stroke(d.Population); })
 				.attr('dy', function(d) { return dv.scale.projection([d.geoLng, d.geoLat])[1] - 2; })
 				.style('display', function(d) { if (d.Population > dv.opt.city.popmin) { return false; } else { return 'none'; }})
+				//.style('display', 'none')
 				.style('font-size', function(d) { return dv.scale.font(d.Population); })
 				.text(function(d) { return d.City; })
 	;
@@ -420,7 +432,6 @@ dv.update.locating = function(change) {
 dv.update.showCityHover = function(event, d) {
 	var html = '<h5>' + d.City + ', ' + d.State + '</h5><ul>';
 	html += '<li><strong>Population: </strong>' + d.Population + '</li>';
-	html += '<li><strong>GDP: </strong>' + d.GDP + '</li>';
 	html += '<li><strong>Highway(s): </strong>' + d.Highway + '</li>';
 	html += '<li><strong>FIPS: </strong>' + d.FIPS + '</li>';
 	html += '</ul>';
