@@ -23,7 +23,7 @@ svg #labels {
     text-shadow: -1px -1px 1px white, 1px 1px 1px white, -1px 1px 1px white, 1px -1px 1px white; }
 
 #hover {
-  display: none;
+  visibility: none;
   padding: 10px;
   background: #f5f5fa;
   border: 1px solid #bbbbcc;

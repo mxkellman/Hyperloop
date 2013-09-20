@@ -39,58 +39,17 @@ http://www.bea.gov/iTable/iTable.cfm?ReqID=9&step=1#reqid=9&step=1&isuri=1
 99992	Edmonton, Canada	1159869
 99991	Vancouver, Canada	2313328
 
-
-
-* Need intersection at 222 and 76 Lancaster-Reading and Harrisburg-Philadelphia (PA)
-
 Latitude and Longitude data from Google Geocoding API
 https://developers.google.com/maps/documentation/geocoding/
 
 Distance and travel times from Google Distance Matrix API
 https://developers.google.com/maps/documentation/distancematrix/
 
-data.msa = [{
-	FIPS: 35620,
-	FullMSAName: "New York-Northern New Jersey-Long Island, NY-NJ-PA",
-	GDP: 1123460,
-	GDPPerCapita: 59080,
-	Population: 19015911,
-	MSACity: "New York-Northern New Jersey-Long Island",
-	MSAState: "NY-NJ-PA",
-	City: "New York",
-	State: "NY",
-	geoLat: number,
-	geoLng: number,
-}]
-
-data.graph = {
-	msa: {
-		msa: number,
-	}
-}
-
-data.pairs = [
-  { source: "Denver, CO",
-    target: "Salt Lake City, UT",
-    distance: 12345,
-    drive time: { hours: 8, minutes: 45 }
-  }, 
-  { source: "Reno, NV", target ... }
-]
-
-data.graph = {
-  "Denver, CO":
-    { "Salt Lake City, UT": 12345,
-      "Cheyenne, WY": 123
-      "Kansas City, MO": 1234 },
-  "Salt Lake City, UT": 
-    { "Denver, CO": 12345, … }
-}      
-
 */
 
 /* global d3 */
 /* global google */
+/* global Graph */
 
 /* jshint devel:true */
 
@@ -99,21 +58,19 @@ data.graph = {
 
 var dv = {
 	create: {},
+	calc: {},
 	data: {},
 	dim: {},
 	draw: {},
+	html: {},
 	format: {},
-/*
-	Uncomment the script tag in html and then this when you need the google API
-	geo: new google.maps.Geocoder(),
-*/
 	force: {},
 	get: {},
 	index: {},
 	scale: {},
 	setup: {},
 	sort: {},
-	state: { loading: 0	},
+	state: {},
 	svg: {},
 	update: {},
 	util: {},
@@ -124,8 +81,8 @@ var dv = {
 dv.setup.variables = function() {
 	dv.opt = {
 		path: {
-			raw: 'data/MSARaw.csv',
-			data: 'data/MSA.csv'
+			msa: 'data/MSA.csv',
+			links: 'data/Links.csv'
 		},
 		cities: {
 			quant: 50,
@@ -147,27 +104,45 @@ dv.setup.variables = function() {
 				max: 20
 			},
 			popmin: 1000000,
+		},
+		map: {
+			scale: 1.34
 		}
 	};
-	dv.dim.win = {
-		w: window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth,
-		h: window.innerHeight || document.documentElement.clientHeight || document.getElementsByTagName('body')[0].clientHeight
-	};
-	dv.dim.win.min = dv.dim.win.w < dv.dim.win.h ? dv.dim.win.w : dv.dim.win.h;
-	dv.scale.map = dv.dim.win.w * 1.34;
-	dv.dim.svg = {
-		w: dv.dim.win.w,
-		h: dv.dim.win.w
-	};
-
-	dv.console = function() {
+	dv.setup.dims();
+	dv.html.win.onresize = function() {
+		dv.setup.dims();
 	};
 };
 
+// specialized console function for checking more complex structures
+dv.console = function() {
+};
+
+// retrieves the data from files and does a minimal amount of processing
+// dv.update.load tracks asynchronous data calls and calls dv.setup.withData after data is loaded  
+dv.get.data = function() {
+	dv.update.load(3);
+	d3.csv(dv.opt.path.msa, function(error, data) {
+		dv.data.msa = data;
+		dv.update.load(-1);
+	});
+	d3.csv(dv.opt.path.links, function(error, data) {
+		dv.data.links = data;
+		dv.update.load(-1);
+	});
+	d3.json('data/us-states.json', function(json) {
+		dv.data.states = json.features;
+		dv.update.load(-1);
+	});
+};
+
+
 // calls dv.setup.withData() once all of the data has been loaded
-dv.update.loading = function(change) {
-	dv.state.loading += change;
-	if (dv.state.loading === 0) { dv.setup.withData(); }
+dv.update.load = function(change) {
+	dv.state.load = dv.state.load || 0;
+	dv.state.load += change;
+	if (dv.state.load === 0) { dv.setup.withData(); }
 };
 
 // any setup that can be done before/while the data is being processed
@@ -176,54 +151,29 @@ dv.setup.withoutData = function() {
 	dv.get.data();
 };
 
-// setup that has to be done after the data is loaded, called from dv.update.loading
+// setup that has to be done after the data is loaded, called from dv.update.load
 dv.setup.withData = function() {
 	dv.sort.cities({data: dv.data.msa, indexName: 'msa', col: dv.opt.cities.col, reverse: true});
 	dv.create.highways();
-	dv.create.links();
+	dv.create.network();
 	dv.create.scales();
 	dv.draw.svg();
 	dv.draw.states();
 	dv.draw.cities();
-	dv.draw.hover();
 };
 
-// parses the highways column, adds cities to dv.data.highways in the order the appear on the highway
-dv.create.highways = function() {
-	dv.data.links = [];
-	dv.data.highways = {};
-	var i, city, cityHwy, fips, hwyNumber, hwyArr, hwyCities, i2,
-		hwyData = dv.data.highways,
-		msa = dv.data.msa,
-		msaIndex = dv.index.msa,
-		hwyKeys = [];
-	for (i = msa.length - 1; i >= 0; i--) {
-		city = msa[i];
-		if (city.Highway) {
-			cityHwy = city.Highway.split(',');
-			for (i2 = cityHwy.length - 1; i2 >= 0; i2--) {
-				hwyNumber = cityHwy[i2];
-				if (!hwyData[hwyNumber]) {
-					hwyData[hwyNumber] = [];
-				}
-				hwyData[hwyNumber].push(city.FIPS);
-			}
-		}
-	}
-	dv.index.highways = d3.keys(hwyData);
-	hwyKeys = dv.index.highways;
-	for (i = hwyKeys.length - 1; i >= 0; i--) {
-		hwyNumber = hwyKeys[i];
-		hwyArr = hwyData[hwyNumber];
-		hwyCities = [];
-		for (i2 = hwyArr.length - 1; i2 >= 0; i2--) {
-			fips = hwyArr[i2];
-			city = msaIndex[fips];
-			hwyCities.push(city.FIPS);
-		}
-		hwyCities = dv.sort.highway(hwyNumber, hwyCities);
-		hwyData[hwyNumber] = hwyCities;
-	}
+dv.setup.dims = function() {
+	dv.html.win = window || document.documentElement || document.getElementsByTagName('body')[0];
+	dv.dim.win = {
+		w: dv.html.win.innerWidth || dv.html.win.clientWidth || dv.html.win.clientWidth,
+		h: dv.html.win.innerHeight || dv.html.win.clientHeight || dv.html.win.clientHeight
+	};
+	dv.dim.win.min = dv.dim.win.w < dv.dim.win.h ? dv.dim.win.w : dv.dim.win.h;
+	dv.scale.map = dv.dim.win.w * dv.opt.map.scale;
+	dv.dim.svg = {
+		w: dv.dim.win.w,
+		h: dv.dim.win.w
+	};
 };
 
 // go through each highway, get each city, and create a link to its nearest neighbor, {source: index, target: index}
@@ -235,43 +185,42 @@ dv.create.links = function() {
 		hwyIndex = dv.index.highways,
 		msa = dv.index.msa,
 		links = dv.data.links,
-		network = dv.index.network,
-		source = {},
-		target = {},
-		i, i2, hwyNumber, highway, fips, fips2, city, city2;
+		c1 = {},
+		c2 = {},
+		i, j, hwyNumber, highway;
 
 	for (i = hwyIndex.length - 1; i >= 0; i--) {
 		hwyNumber = hwyIndex[i];
 		highway = highways[hwyNumber];
-		for (i2 = highway.length - 1; i2 >= 1; i2--) {
-			fips = highway[i2];
-			city = msa[fips];
-			fips2 = highway[i2-1];
-			city2 = msa[fips2];
-			source = {geoLng: city.geoLng, geoLat: city.geoLat, fips: city.fips};
-			target = {geoLng: city2.geoLng, geoLat: city2.geoLat, fips: city2.fips};
-			links.push({source: source, target: target, Highway: hwyNumber});
-			network[fips] = network[fips] || {};
-			network[fips2] = network[fips2] || {};
-			if (!network[fips][fips2]) { network[fips][fips2] = 10; }
-			if (!network[fips2][fips]) { network[fips2][fips] = 10; }
+		for (j = highway.length - 1; j >= 1; j--) {
+			c1.fips = highway[j];
+			c1.msa = msa[c1.fips];
+			c1.geoLat = c1.msa.geoLat;
+			c1.geoLng = c1.msa.geoLng;
+			c2.fips = highway[j-1];
+			c2.msa = msa[c2.fips];
+			c2.geoLat = c2.msa.geoLat;
+			c2.geoLng = c2.msa.geoLng;
+			links.push({c1fips: c1.fips, c1geoLat: c1.geoLat, c1geoLng: c1.geoLng, c2fips: c2.fips, c2geoLat: c2.geoLat, c2geoLng: c2.geoLng, Highway: hwyNumber});
 		}
 	}
+	dv.create.network();
 };
 
-// sorts the cities along a highway from north/south or east/west depending on the highway number 
-dv.sort.highway = function(hwyNumber, hwyCities) {
-	var msa = dv.index.msa;
-	if (hwyNumber%2 === 0) {
-		hwyCities.sort(function(a, b) {
-			return msa[b].geoLng - msa[a].geoLng;
-		});
-	} else {
-		hwyCities.sort(function(a, b) {
-			return msa[b].geoLat - msa[a].geoLat;
-		});
+dv.create.network = function() {
+	dv.index.network = {};
+	var i, link, distance,
+		network = dv.index.network;
+
+	for (i = dv.data.links.length - 1; i >= 0; i--) {
+		link = dv.data.links[i];
+		network[link.c1fips] = network[link.c1fips] || {};
+		network[link.c2fips] = network[link.c2fips] || {};
+		distance = parseInt(link.dist, 10);
+		network[link.c1fips][link.c2fips] = network[link.c1fips][link.c2fips] || {dist: distance};
+		network[link.c2fips][link.c1fips] = network[link.c2fips][link.c1fips] || {dist: distance};
 	}
-	return hwyCities;
+	dv.calc.graph = new Graph(network);
 };
 
 // expects {data: someArray, indexName: 'indexName', col: 'someColName', reverse: false}
@@ -362,10 +311,10 @@ dv.draw.cities = function() {
 			.data(dv.data.links)
 			.enter().append('svg:line')
 				.attr('class', 'link')
-				.attr('x1', function(d) { return dv.scale.projection([d.source.geoLng, d.source.geoLat])[0]; })
-				.attr('y1', function(d) { return dv.scale.projection([d.source.geoLng, d.source.geoLat])[1]; })
-				.attr('x2', function(d) { return dv.scale.projection([d.target.geoLng, d.target.geoLat])[0]; })
-				.attr('y2', function(d) { return dv.scale.projection([d.target.geoLng, d.target.geoLat])[1]; })
+				.attr('x1', function(d) { return dv.scale.projection([d.c1geoLng, d.c1geoLat])[0]; })
+				.attr('y1', function(d) { return dv.scale.projection([d.c1geoLng, d.c1geoLat])[1]; })
+				.attr('x2', function(d) { return dv.scale.projection([d.c2geoLng, d.c2geoLat])[0]; })
+				.attr('y2', function(d) { return dv.scale.projection([d.c2geoLng, d.c2geoLat])[1]; })
 	;
 
 	dv.svg.cities = dv.svg.map.append('svg:g')
@@ -380,8 +329,9 @@ dv.draw.cities = function() {
 				.style('fill', function(d) { if (dv.scale.stroke(d.Population) === 0) { return '#900'; } else { return false; } })
 				.style('stroke-width', function(d) { return dv.scale.stroke(d.Population); })
 				.style('display', function(d) { if (!d.Highway || d.City === 'Junction') { return 'none'; } else { return false; } })
+				//.style('display', function(d) { if (!d.Highway) { return 'none'; } else { return false; } })
 				.on('mouseover', function(d) { dv.update.showCityHover(event, d); })
-				.on('mouseout', dv.update.hideHover)
+				.on('mouseout', dv.hover.hide)
 	;
 
 	dv.svg.labels = dv.svg.map.append('svg:g')
@@ -399,75 +349,160 @@ dv.draw.cities = function() {
 	;
 };
 
-dv.draw.hover = function() {
-	dv.svg.hover = d3.select('body').append('div')
-		.attr('id', 'hover')
-	;
-};
-
-// retrieves the data from files and does a minimal amount of processing
-// dv.update.loading tracks asynchronous data calls and calls dv.setup.withData after data is loaded  
-dv.get.data = function() {
-	dv.update.loading(2);
-	d3.csv(dv.opt.path.data, function(error, data) {
-		dv.data.msa = data;
-		dv.update.loading(-1);
-	});
-	d3.json('data/us-states.json', function(json) {
-		dv.data.states = json.features;
-		dv.update.loading(-1);
-	});
-};
-
-// these functions were all used to generate lat and lng values for each city
-dv.update.locating = function(change) {
-	dv.state.locating += change;
-	if (dv.state.locating === 0) {
-		var csv = dv.util.objToCSV(dv.data.msa);
-		d3.select('body').append('div')
-			.html(csv);
-	}
-};
-
 dv.update.showCityHover = function(event, d) {
 	var html = '<h5>' + d.City + ', ' + d.State + '</h5><ul>';
 	html += '<li><strong>Population: </strong>' + d.Population + '</li>';
 	html += '<li><strong>Highway(s): </strong>' + d.Highway + '</li>';
 	html += '<li><strong>FIPS: </strong>' + d.FIPS + '</li>';
 	html += '</ul>';
-	dv.update.showHover(event, html);
+	dv.hover.show(event, html);
 };
 
-dv.update.showHover = function(event, html) {
-	dv.svg.hover
-		.style('top', event.pageY - 80 + 'px')
-		.style('left', (event.pageX + 20) + 'px')
-		.style('display', 'block')
-		.html(html)
-	;
+dv.calc.distance = function(a,b) {
+	var i, fips1, fips2,
+		distance = 0,
+		array = dv.calc.graph.findShortestPath(a,b),
+		network = dv.index.network;
+
+	for (i = array.length - 1; i > 0; i--) {
+		fips1 = array[i];
+		fips2 = array[i-1];
+		distance += network[fips1][fips2].dist;
+	}
+	return distance;
 };
 
-dv.update.hideHover = function() {
-	dv.svg.hover.style('display', 'none');
+// deprecated once cities were finalized (moved to highways.json) 
+// these functions were used to create the highway system from the list of cities
+// parses the highways column, adds cities to dv.data.highways in the order the appear on the highway
+dv.create.highways = function() {
+	dv.data.highways = {};
+	var i, city, cityHwy, fips, hwyNumber, hwyArr, hwyCities, j,
+		hwyData = dv.data.highways,
+		msa = dv.data.msa,
+		msaIndex = dv.index.msa,
+		hwyKeys = [];
+	for (i = msa.length - 1; i >= 0; i--) {
+		city = msa[i];
+		if (city.Highway) {
+			cityHwy = city.Highway.split(',');
+			for (j = cityHwy.length - 1; j >= 0; j--) {
+				hwyNumber = cityHwy[j];
+				if (!hwyData[hwyNumber]) {
+					hwyData[hwyNumber] = [];
+				}
+				hwyData[hwyNumber].push(city.FIPS);
+			}
+		}
+	}
+	dv.index.highways = d3.keys(hwyData);
+	hwyKeys = dv.index.highways;
+	for (i = hwyKeys.length - 1; i >= 0; i--) {
+		hwyNumber = hwyKeys[i];
+		hwyArr = hwyData[hwyNumber];
+		hwyCities = [];
+		for (j = hwyArr.length - 1; j >= 0; j--) {
+			fips = hwyArr[j];
+			city = msaIndex[fips];
+			hwyCities.push(city.FIPS);
+		}
+		hwyCities = dv.sort.highway(hwyNumber, hwyCities);
+		hwyData[hwyNumber] = hwyCities;
+	}
+};
 
+// sorts the cities along a highway from north/south or east/west depending on the highway number 
+dv.sort.highway = function(hwyNumber, hwyCities) {
+	var msa = dv.index.msa;
+	if (hwyNumber%2 === 0) {
+		hwyCities.sort(function(a, b) {
+			return msa[b].geoLng - msa[a].geoLng;
+		});
+	} else {
+		hwyCities.sort(function(a, b) {
+			return msa[b].geoLat - msa[a].geoLat;
+		});
+	}
+	return hwyCities;
+};
+
+
+
+// these functions were all used to get the distance between each adjacent node
+dv.update.dist = function(change) {
+	dv.state.dist = dv.state.dist || 0;
+	dv.state.dist += change;
+	if (dv.state.dist === 0) {
+		dv.util.aooToCSV(dv.data.links);
+	}
+};
+
+dv.get.dist = function() {
+	var timer, link, origin, destination, answer,
+		i = 0,
+		links = dv.data.links,
+		length = links.length,
+		service = new google.maps.DistanceMatrixService();
+
+	dv.update.dist(1);
+	timer = setInterval(function() {
+		dv.update.dist(1);
+		getDist(i);
+		i++;
+		if (i >= length) {
+			dv.update.dist(-1);
+			clearInterval(timer);
+		}
+	}, 2000);
+
+	function getDist(i) {
+		link = links[i];
+		origin = new google.maps.LatLng(link.c1geoLat, link.c1geoLng);
+		destination = new google.maps.LatLng(link.c2geoLat, link.c2geoLng);
+		service.getDistanceMatrix(
+			{
+				origins: [origin],
+				destinations: [destination],
+				travelMode: google.maps.TravelMode.DRIVING
+			}, function(results, status) {
+				if (status === google.maps.DistanceMatrixStatus.OK) {
+					answer = results.rows[0].elements[0];
+					links[i].drivetime = answer.duration.value;
+					links[i].dist = answer.distance.value;
+					console.log(i);
+				} else { console.log("Fail: " + status); }
+				dv.update.dist(-1);
+			}
+		);
+	}
+};
+
+// these functions were all used to generate lat and lng values for each city
+dv.update.latlng = function(change) {
+	dv.state.latlng = dv.state.latlng || 0;
+	dv.state.latlng += change;
+	if (dv.state.latlng === 0) {
+		dv.util.aooToCSV(dv.data.msa);
+	}
 };
 
 dv.get.latlng = function() {
-	d3.csv(dv.opt.path.raw, function(error, data) {
-		var i = 0,
-			city = {},
-			address = '',
-			loc = {},
-			len = data.length,
-			timer;
+	var length, timer,
+		i = 0,
+		city = {},
+		address = '',
+		loc = {},
+		service = google.maps.Geocoder ? new google.maps.Geocoder() : function() { console.log('Google services not loaded.'); };
 
+	d3.csv(dv.opt.path.raw, function(error, data) {
+		length = data.length;
 		dv.data.raw = data;
 		timer = setInterval(function() {
-			while (i < len && dv.data.raw[i].geoLat !== 'undefined') {
+			while (i < length && dv.data.raw[i].geoLat !== 'undefined') {
 				i++;
 			}
-			if (i < len) {
-				dv.update.locating(1);
+			if (i < length) {
+				dv.update.latlng(1);
 				getLatLng(i);
 				i++;
 			} else {
@@ -478,48 +513,100 @@ dv.get.latlng = function() {
 		function getLatLng(i) {
 			city = dv.data.msa[i];
 			address = city.City + ', ' + city.State;
-			dv.geo.geocode({'address': address}, function(results, status) {
+			service.geocode({'address': address}, function(results, status) {
 				if (status === google.maps.GeocoderStatus.OK) {
 					loc = results[0].geometry.location;
 					dv.data.raw[i].geoLat = loc.lat();
 					dv.data.raw[i].geoLng = loc.lng();
 				} else { console.log("Fail: " + status); }
-				dv.update.locating(-1);
+				dv.update.latlng(-1);
 			});
 		}
 	});
 };
 
-dv.util.objToCSV = function(obj) {
+// takes an array of objects, converts it to a string, and writes it out to the dom in a div with id 'console'
+dv.util.aooToCSV = function(obj) {
 	var i = 0,
-		i2 = 0,
-		len = 0,
+		j = 0,
+		len = obj.length,
 		len2 = 0,
-		city = {},
+		row = {},
 		cols = d3.keys(obj[0]),
 		col = '',
 		csv = '';
-	len = obj.length;
+
 	for (i = 0; i < len; i++) {
 		if (csv === '') {
 			len2 = cols.length;
-			for (i2 = 0; i2 < len2; i2++) {
-				col = cols[i2];
+			for (j = 0; j < len2; j++) {
+				col = cols[j];
 				csv += '"' + col + '"';
-				if (i2 < len2 - 1) { csv += ','; }
+				if (j < len2 - 1) { csv += ','; }
 			}
 			csv +='</br>';
 		}
-		city = obj[i];
+		row = obj[i];
 		len2 = cols.length;
-		for (i2 = 0; i2 < len2; i2++) {
-			col = cols[i2];
-			csv += '"' + city[col] + '"';
-			if (i2 < len2 - 1) { csv += ','; }
+		for (j = 0; j < len2; j++) {
+			col = cols[j];
+			csv += '"' + row[col] + '"';
+			if (j < len2 - 1) { csv += ','; }
 		}
 		csv +='</br>';
 	}
-	return csv;
+	dv.util.consoleToBody(csv);
+};
+
+// takes an object, converts it to a json string, and writes it out to the dom in a div with id 'console'
+dv.util.objToJSON = function(obj) {
+	var string = JSON.stringify(obj);
+	dv.util.consoleToBody(string);
+};
+
+// writes a string out to a div with id 'console'
+dv.util.consoleToBody = function(string) {
+	if (!dv.html.console) {
+		dv.html.console = d3.select('body').append('div').attr('id','console');
+	}
+	dv.html.console.html(string);
+};
+
+// creates a hover that can be called by dv.util.hover(event, html), if no event or html is provided, hover is hidden
+dv.hover = dv.hover || {};
+dv.hover.show = function(event, html) {
+	if (!dv.html.hover) { dv.hover.create(); }
+	var x, y, hover, height, width,
+		dim = dv.dim.win,
+		win = dv.html.win,
+		scroll = { x: win.scrollX, y: win.scrollY },
+		opt = dv.opt.hover || {},
+		margin = opt.margin || 10,
+		offset = opt.offset || 10;
+
+	if (event && html) {
+		x = event.clientX + offset;
+		y = event.clientY - offset;
+
+		hover = document.getElementById('hover');
+		dv.html.hover.html(html);
+		height = hover.offsetHeight;
+		width = hover.offsetWidth;
+		if (x + width + margin >= dim.w) { console.log('slipped'); x = x - 2 * offset - width; x = x < scroll.x ? margin : x; }
+		if (y + height + margin >= dim.h) { y = dim.h - margin - height; y = y < scroll.y ? dim.h - height - margin : y; }
+		x += scroll.x;
+		y += scroll.y;
+		dv.html.hover.style('top', y + 'px').style('left', x + 'px').style('visibility','visible');
+	}
+};
+dv.hover.create = function() {
+	dv.html.hover = d3.select('body').append('div')
+		.attr('id', 'hover')
+		.style('display', 'block')
+		.attr('visibility', 'hidden');
+};
+dv.hover.hide = function() {
+	if (dv.html.hover) { dv.html.hover.style('visibility','hidden'); }
 };
 
 dv.setup.withoutData();

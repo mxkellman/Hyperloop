@@ -18,7 +18,7 @@ FIPS,MSANameFull,Population,City,State,geoLat,geoLng,Highway,Spur
 9,Junction,0,Junction,IN,38.169114,-87.469819,"64,1069",
 22660,"Fort Collins-Loveland, CO",305541,Fort Collins,CO,40.5852602,-105.084423,25,
 24540,"Greeley, CO",258652,Greeley,CO,40.4233142,-104.7091322,34,25
-11,Junction,0,Junction,CO,40.406699,-104.993012,34,
+11,Junction,0,Junction,CO,40.406699,-104.993012,"25,34",
 14500,"Boulder, CO",299383,Boulder,CO,40.0149856,-105.2705456,9014,25
 12,Junction,0,Junction,CO,40.159984,-104.979279,"25,9014",
 39140,"Prescott, AZ",211886,Prescott,AZ,34.5400242,-112.4685025,9016,17
