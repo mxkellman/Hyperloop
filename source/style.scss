@@ -32,6 +32,26 @@ svg {
 			text-shadow: -1px -1px 1px rgba(#FFF, 1), 1px 1px 1px rgba(#FFF, 1), -1px 1px 1px rgba(#FFF, 1), 1px -1px 1px rgba(#FFF, 1);
 		}
 	}
+	#ghost-cities {
+		fill: #FFF;
+		stroke: #999;
+		stroke-opacity: 0.5;
+	}
+	#ghost-links {
+		stroke: #999;
+		stroke-width: 2px;
+		opacity: 0.5;
+	}
+	#ghost-labels {
+		display: none;
+		opacity: 0.5;
+		.ghost-label {
+			fill: #446;
+			font-weight: 100;
+			text-shadow: -1px -1px 1px rgba(#FFF, 1), 1px 1px 1px rgba(#FFF, 1), -1px 1px 1px rgba(#FFF, 1), 1px -1px 1px rgba(#FFF, 1);
+		}
+	}
+
 }
 
 #hover {
