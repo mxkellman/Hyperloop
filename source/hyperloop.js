@@ -225,7 +225,7 @@ dv.create.scales = function() {
 		.rangeRound([city.radius.min, city.radius.max])
 	;
 
-	dv.scale.stroke = d3.scale.pow()
+	dv.scale.strokeW = d3.scale.pow()
 		.exponent(0.5)
 		.domain(populationExtent)
 		.rangeRound([city.stroke.min, city.stroke.max])
@@ -235,6 +235,11 @@ dv.create.scales = function() {
 		.exponent(0.5)
 		.domain([city.popmin, populationExtent[1]])
 		.rangeRound([city.font.min, city.font.max])
+	;
+
+	dv.scale.fill = d3.scale.linear()
+		.domain([0,5])
+		.range(['#900','#FFF'])
 	;
 
 	dv.scale.round = function(num) {
@@ -259,7 +264,6 @@ dv.create.scales = function() {
 	dv.scale.yRound = function(num) {
 		return dv.scale.round(dv.scale.y(num));
 	};
-
 };
 
 dv.draw.svg = function() {
@@ -304,14 +308,14 @@ dv.draw.cities = function() {
 		;
 
 		dv.svg.labels
-			.attr('dx', function(d) { if (d.FIPS === fips) {  dv.temp = this; return nodeX + dv.scale.r(d.Population) + dv.scale.stroke(d.Population); } else { return this.attributes[1].value; } })
+			.attr('dx', function(d) { if (d.FIPS === fips) {  dv.temp = this; return nodeX + dv.scale.r(d.Population) + dv.scale.strokeW(d.Population); } else { return this.attributes[1].value; } })
 			.attr('dy', function(d) { if (d.FIPS === fips) { return nodeY - 2; } else { return this.attributes[2].value; } })
 		;
 	};
 
 	dv.update.dragend = function(d) {
-		d.x = dv.scale.x.invert(dv.scale.round(d3.select(this).attr('cx')));
-		d.y = dv.scale.y.invert(dv.scale.round(d3.select(this).attr('cy')));
+		d.x = Math.round(dv.scale.x.invert(d3.select(this).attr('cx'))*250)/250;
+		d.y = Math.round(dv.scale.y.invert(d3.select(this).attr('cy'))*250)/250;
 	};
 
 
@@ -342,11 +346,12 @@ dv.draw.cities = function() {
 				.attr('r', function(d) { return dv.scale.r(d.Population); })
 				.attr('cx', function(d) { return dv.scale.xRound(d.x); })
 				.attr('cy', function(d) { return dv.scale.yRound(d.y); })
-				.style('stroke-width', function(d) { return dv.scale.stroke(d.Population); })
-				//.style('display', function(d) { if (!d.Highway || d.City === 'Junction') { return 'none'; } else { return false; } })
-				.style('display', function(d) { if (!d.Highway) { return 'none'; } else { return false; } })
+				.style('stroke-width', function(d) { return dv.scale.strokeW(d.Population); })
+				.style('display', function(d) { if (!d.Highway || d.City === 'Junction') { return 'none'; } else { return false; } })
+				//.style('display', function(d) { if (!d.Highway) { return 'none'; } else { return false; } })
 				.on('mouseover', function(d) { dv.update.cityHover(event, d); })
 				.on('mouseout', dv.hover.hide)
+				.on('click', dv.update.allDistances)
 				.call(dv.update.drag)
 	;
 
@@ -356,7 +361,7 @@ dv.draw.cities = function() {
 			.data(dv.data.msa)
 			.enter().append('svg:text')
 				.attr('class', 'label')
-				.attr('dx', function(d) { return dv.scale.xRound(d.x) + dv.scale.r(d.Population) + dv.scale.stroke(d.Population); })
+				.attr('dx', function(d) { return dv.scale.xRound(d.x) + dv.scale.r(d.Population) + dv.scale.strokeW(d.Population); })
 				.attr('dy', function(d) { return dv.scale.yRound(d.y) - 2; })
 				.style('display', function(d) { if (d.Population > dv.opt.city.popmin || d.State === 'Canada') { return false; } else { return 'none'; }})
 				//.style('display', 'none')
@@ -374,7 +379,7 @@ dv.update.cityToPlace = function() {
 	;
 	dv.svg.labels.transition()
 		.duration(duration)
-		.attr('dx', function(d) { return dv.scale.xRound(d.x) + dv.scale.r(d.Population) + dv.scale.stroke(d.Population); })
+		.attr('dx', function(d) { return dv.scale.xRound(d.x) + dv.scale.r(d.Population) + dv.scale.strokeW(d.Population); })
 		.attr('dy', function(d) { return dv.scale.yRound(d.y) - 2; })
 	;
 	dv.svg.links.transition()
@@ -395,7 +400,7 @@ dv.update.cityToGeo = function() {
 	;
 	dv.svg.labels.transition()
 		.duration(duration)
-		.attr('dx', function(d) { return dv.scale.projection([d.geoLng, d.geoLat])[0] + dv.scale.r(d.Population) + dv.scale.stroke(d.Population); })
+		.attr('dx', function(d) { return dv.scale.projection([d.geoLng, d.geoLat])[0] + dv.scale.r(d.Population) + dv.scale.strokeW(d.Population); })
 		.attr('dy', function(d) { return dv.scale.projection([d.geoLng, d.geoLat])[1] - 2; })
 	;
 	dv.svg.links.transition()
@@ -416,18 +421,138 @@ dv.update.cityHover = function(event, d) {
 	dv.hover.show(event, html);
 };
 
+dv.update.allDistances = function(origin) {
+	var i, fips, array,
+		extremes = [99991,99992,99994,20260,24580,13020,99995,99996,12620,39300,35620,47900,47260,27340,34820,16700,33100,27260,15180,88886,88883,41740,42220,14740];
+
+	dv.index.time = {};
+	dv.index.time[origin.FIPS] = 0;
+
+	function checkFIPS(fips) {
+		if (!dv.index.time[fips]) {
+			array = dv.calc.graph.findShortestPath(origin.FIPS, fips);
+			dv.update.allTimes(array);
+		}
+	}
+
+	for (i = extremes.length - 1; i >= 0; i--) {
+		fips = extremes[i];
+		checkFIPS(fips);
+	}
+
+	for (i = dv.data.msa.length - 1; i >= 0; i--) {
+		fips = dv.data.msa[i].FIPS;
+		checkFIPS(fips);
+	}
+
+	dv.svg.cities
+		.style('fill', function(d) {
+			if (d.City !== 'Junction') {
+				return dv.scale.fill(dv.index.time[d.FIPS]);
+			} else { return false; }
+		})
+		.style('stroke', function() {
+/*			if (d.City !== 'Junction') {
+				return dv.scale.fill(dv.index.time[d.FIPS]);
+			} else { return false; }
+*/			return "#FFF";
+		})
+		.style('stroke-width', 2)
+	;
+};
+
+dv.update.allTimes = function(array) {
+	var i, fips1, fips2,
+		distance = 0,
+		length = array.length;
+
+	for (i = 1; i < length; i++) {
+		fips1 = array[i];
+		fips2 = array[i-1];
+		distance += dv.index.network[fips1][fips2].dist;
+		dv.index.time[fips1] = dv.index.time[fips1] || dv.calc.time(distance);
+	}
+};
+
 dv.calc.distance = function(a,b) {
 	var i, fips1, fips2,
 		distance = 0,
-		array = dv.calc.graph.findShortestPath(a,b),
-		network = dv.index.network;
+		array = dv.calc.graph.findShortestPath(a,b);
 
 	for (i = array.length - 1; i > 0; i--) {
 		fips1 = array[i];
 		fips2 = array[i-1];
-		distance += network[fips1][fips2].dist;
+		distance += dv.index.network[fips1][fips2].dist;
 	}
 	return distance;
+};
+
+// Let's make this equation a bit more robust at some point
+// parameterize the options and actually do some math
+dv.calc.time = function(meters) {
+	/*	Formula for total time:
+	T = total time in hours
+	D = total distance in miles
+	T = (D - 65.4mi)/760mph + 0.214hr
+	*/
+	var dist = meters/1610,
+		time = 0,
+		safeSpeed = 300,
+		topSpeed = 760,
+		distToSafe = 1.1 * 2,
+		distAtSafe = 28.1 * 2,
+		distToTop = 2.7 * 2;
+
+	if (dist > distToSafe) {
+		time += distToSafe / (safeSpeed / 2);
+		dist -= distToSafe;
+	} else {
+		time += dist / (safeSpeed / 2);
+		dist = 0;
+	}
+
+	if (dist > distAtSafe) {
+		time += distAtSafe / safeSpeed;
+		dist -= distToSafe;
+	} else {
+		time += dist / safeSpeed;
+		dist = 0;
+	}
+
+	if (dist > distToTop) {
+		time += distToTop / (topSpeed / 2);
+		dist -= distToSafe;
+	} else {
+		time += dist / (topSpeed / 2);
+		dist = 0;
+	}
+
+	if (dist > 0) {
+		time += dist / topSpeed;
+	}
+
+	return time;
+};
+
+dv.format.distance = function(meters) {
+	return Math.round(meters/1610*10)/10 + ' miles';
+};
+
+// expects time in hours
+dv.format.time = function(time) {
+	var seconds, hours, minutes;
+	seconds = time * 3600;
+	hours = Math.floor(seconds/3600);
+	seconds -= hours * 3600;
+	minutes = Math.floor(seconds / 60);
+	seconds -= minutes * 60;
+	seconds = Math.round(seconds%60, 10);
+
+	function checkS(num) {
+		if (num > 1 || num === 0) { return 's'; } else { return ''; }
+	}
+
+	return hours + ' hour' + checkS(hours) + ' ' + minutes + ' minute' + checkS(minutes) + ' and ' + seconds + ' second' + checkS(seconds);
 };
 
 // takes an array of objects, converts it to a string, and writes it out to the dom in a div with id 'console'
