@@ -8,10 +8,10 @@ svg #states path {
   stroke-width: 1px; }
 svg #cities {
   fill: #FFF;
-  stroke: #900;
+  stroke: #048;
   stroke-width: 2px; }
 svg #links {
-  stroke: #900;
+  stroke: #048;
   stroke-width: 2px;
   pointer-events: none; }
 svg #labels {

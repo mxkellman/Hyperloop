@@ -12,39 +12,6 @@ Medium Enhancements
 Large Enhancements
 
 
-Notes
-GDP and Population data sourced from 
-Bureau of Economic Analysis
-http://www.bea.gov/iTable/iTable.cfm?ReqID=9&step=1#reqid=9&step=1&isuri=1
-
-* Hanford MSA (25260) combined with Visalia (47300)
-* Visalia: Population: 449254
-* Hanford: Population: 153767
-* Combined:	Population: 603021
-
-* Butte-Helena, MT
-* Source: Wikipedia
-* Helena - FIPS: 30-35600	Population: 76277
-* Butte - FIPS: 30-11397	Population: 33525
-* Combined: Population: 109802
-
-
-* Cities Added
-* Source: Wikipedia
-37775	Lake City, FL	67531
-99996	Montreal, Canada	3824221
-99995	Toronto, Canada	5583064
-99994	Winnipeg, Canada	730018
-99993	Calgary, Canada	1214839
-99992	Edmonton, Canada	1159869
-99991	Vancouver, Canada	2313328
-
-Latitude and Longitude data from Google Geocoding API
-https://developers.google.com/maps/documentation/geocoding/
-
-Distance and travel times from Google Distance Matrix API
-https://developers.google.com/maps/documentation/distancematrix/
-
 */
 
 /* global d3 */
@@ -57,23 +24,32 @@ https://developers.google.com/maps/documentation/distancematrix/
 // all static variables and object placeholders
 
 var dv = {
-	create: {},
-	calc: {},
 	data: {},
-	dim: {},
-	draw: {},
-	html: {},
-	format: {},
-	force: {},
-	get: {},
-	index: {},
-	scale: {},
-	setup: {},
-	sort: {},
+
+	load: {},
+	process: {},
 	state: {},
+
+	dim: {},
+	scale: {},
+
+	html: {},
 	svg: {},
+
+	write: {},
+	draw: {},
+
+	create: {},
 	update: {},
+	
+	calc: {},
+	format: {},
+
 	util: {},
+
+//deprecated
+	index: {},
+	sort: {},
 };
 
 // dv.opt stores all options that can be changed "on the fly"
@@ -107,19 +83,58 @@ dv.opt = {
 	},
 	map: {
 		scale: 1.34,
-		grid: 5
+		grid: 10
 	}
 };
 
+/* LOAD/PROCESS: Load data from external files, Process data */
+
+// retrieves the data from files and does a minimal amount of processing
+// dv.update.data tracks asynchronous data calls and calls dv.create.data after data is loaded  
+dv.load.data = function() {
+	dv.update.loadState(3);
+	d3.csv(dv.opt.path.msa, function(error, data) {
+		dv.data.msa = data;
+		dv.update.loadState(-1);
+	});
+	d3.csv(dv.opt.path.links, function(error, data) {
+		dv.data.links = data;
+		dv.update.loadState(-1);
+	});
+	d3.json(dv.opt.path.statemap, function(data) {
+		dv.data.states = data.features;
+		dv.update.loadState(-1);
+	});
+};
+
+// setup that has to be done after the data is loaded, called from dv.update.data
+dv.process.data = function() {
+	dv.create.index({data: dv.data.msa, indexName: 'msa', col: 'FIPS'});
+	dv.create.network();
+	dv.create.scales();
+	dv.draw.links();
+	dv.draw.cities();
+	dv.draw.labels();
+};
+
+/* CREATE: Create/manipulate data stuctures */
+
+// get setup, load data, and take care of anything that can be done while the data is loading
+dv.create.start = function() {
+	dv.create.variables();
+	dv.load.data();
+	dv.draw.svg();
+};
+
 // calculates variables, especailly those based on the options and vice versa 
-dv.setup.variables = function() {
-	dv.setup.dims();
+dv.create.variables = function() {
+	dv.create.dims();
 	dv.html.win.onresize = function() {
-		dv.setup.dims();
+		dv.create.dims();
 	};
 };
 
-dv.setup.dims = function() {
+dv.create.dims = function() {
 	dv.html.win = window || document.documentElement || document.getElementsByTagName('body')[0];
 	dv.dim.win = {
 		w: dv.html.win.innerWidth || dv.html.win.clientWidth || dv.html.win.clientWidth,
@@ -131,46 +146,6 @@ dv.setup.dims = function() {
 		w: dv.dim.win.w,
 		h: dv.dim.win.w
 	};
-};
-
-// setup that has to be done after the data is loaded, called from dv.update.data
-dv.setup.data = function() {
-	dv.create.index({data: dv.data.msa, indexName: 'msa', col: 'FIPS'});
-	dv.create.network();
-	dv.create.scales();
-	dv.draw.svg();
-	dv.draw.cities();
-};
-
-// any setup that can be done before/while the data is being processed
-dv.setup.preData = function() {
-	dv.setup.variables();
-	dv.get.data();
-};
-
-// retrieves the data from files and does a minimal amount of processing
-// dv.update.data tracks asynchronous data calls and calls dv.setup.data after data is loaded  
-dv.get.data = function() {
-	dv.update.data(3);
-	d3.csv(dv.opt.path.msa, function(error, data) {
-		dv.data.msa = data;
-		dv.update.data(-1);
-	});
-	d3.csv(dv.opt.path.links, function(error, data) {
-		dv.data.links = data;
-		dv.update.data(-1);
-	});
-	d3.json(dv.opt.path.statemap, function(data) {
-		dv.data.states = data.features;
-		dv.update.data(-1);
-	});
-};
-
-// calls dv.setup.data() once all of the data has been loaded
-dv.update.data = function(change) {
-	dv.state.load = dv.state.load || 0;
-	dv.state.load += change;
-	if (dv.state.load === 0) { dv.setup.data(); }
 };
 
 dv.create.network = function() {
@@ -239,7 +214,7 @@ dv.create.scales = function() {
 
 	dv.scale.fill = d3.scale.linear()
 		.domain([0,5])
-		.range(['#900','#FFF'])
+		.range(['#048','#ffeeee'])
 	;
 
 	dv.scale.round = function(num) {
@@ -264,7 +239,95 @@ dv.create.scales = function() {
 	dv.scale.yRound = function(num) {
 		return dv.scale.round(dv.scale.y(num));
 	};
+
+	dv.scale.shape = d3.svg.line()
+		.x(function(d) { return dv.scale.xRound(d.x); })
+		.y(function(d) { return dv.scale.xRound(d.y); })
+		.interpolate('cardinal-closed')
+	;
 };
+
+dv.create.shapes = function(oFIPS) {
+	if (!oFIPS) { oFIPS = 19740; }
+	dv.update.allDistances(oFIPS);
+	dv.data.shapes.push(dv.create.shape(dv.create.subset(0,1),oFIPS));
+	dv.data.shapes.push(dv.create.shape(dv.create.subset(1,2),oFIPS));
+//	dv.data.shapes.push(dv.create.shape(dv.create.subset(2,3),oFIPS));
+//	dv.data.shapes.push(dv.create.shape(dv.create.subset(3,4),oFIPS));
+	dv.svg.shapes = dv.svg.map.append('svg:g')
+		.selectAll('path')
+		.data(dv.data.shapes)
+		.enter().append('svg:path')
+			.style('fill', '#048')
+			.style('fill-opacity', 0.35)
+			.attr('d', dv.scale.shape)
+		;
+//	dv.update.shapes();
+};
+
+dv.create.subset = function(min,max) {
+	var i, time, subset = [];
+	if (!dv.index.time) { dv.update.allDistances(19740); }
+	dv.data.fips = dv.data.fips || d3.keys(dv.index.time);
+	for (i = dv.data.fips.length - 1; i >= 0; i--) {
+		time = dv.index.time[dv.data.fips[i]];
+		if (time > min && time <= max) {
+			subset.push(dv.data.fips[i]);
+		}
+	}
+	return subset;
+};
+
+dv.create.shape = function(subset, oFIPS) {
+	var i, i2, i3, i4, j, fips, city, c1, c2, c3, c4,
+		origin = dv.index.msa[oFIPS],
+		NE = [],
+		NW = [],
+		SW = [],
+		SE = [],
+		shape = [];
+
+	for (i = subset.length - 1; i >= 0; i--) {
+		fips = subset[i];
+		//cities[fips] = dv.index.msa[fips];
+		city = dv.index.msa[fips];
+		if (city.y >= origin.y) {
+			if (city.x <= origin.x) { SW.push(city); } else { SE.push(city); }
+		} else {
+			if (city.x <= origin.x) { NW.push(city); } else { NE.push(city); }
+		}
+	}
+	shape.NE = dv.util.aooSort({array: NE, key: 'x'});
+	shape.SE = dv.util.aooSort({array: SE, key: 'x', reverse: true});
+	shape.SW = dv.util.aooSort({array: SW, key: 'x', reverse: true});
+	shape.NW = dv.util.aooSort({array: NW, key: 'x'});
+
+	shape = NE.concat(SE,SW,NW);
+	i = 0; j = 0;
+	while (i < shape.length && shape.length >= 3 && j < 60) {
+		i2 = (i+1)%shape.length;
+		i3 = (i+2)%shape.length;
+		i4 = (i+3)%shape.length;
+		c1 = dv.calc.xyDist(shape[i], origin);
+		c2 = dv.calc.xyDist(shape[i2], origin);
+		c3 = dv.calc.xyDist(shape[i3], origin);
+		c4 = dv.calc.xyDist(shape[i4], origin);
+		if ( (c2 < c1 && c2 < c4) && (c3 < c1 && c3 < c4) ) {
+			shape.splice(i2,2);
+			if (i >= shape.length) { i = shape.length - 1; }
+			j++;
+		} else if (c2 < c1 && c2 < c3) {
+			shape.splice(i2,1);
+			if (i >= shape.length) { i = shape.length - 1; }
+			j++;
+		} else { i++; }
+	}
+	return shape;
+};
+
+/* WRITE: Write out html elements */
+
+/* DRAW: Draw SVG elements for the first time */
 
 dv.draw.svg = function() {
 	dv.svg.main = d3.select('body').append('svg:svg')
@@ -275,6 +338,17 @@ dv.draw.svg = function() {
 	dv.svg.map = dv.svg.main.append('svg:g')
 		.attr('class', 'map')
 		//.call(d3.behavior.zoom().on('zoom', this.zoom))
+	;
+};
+
+dv.draw.shapes = function() {
+	dv.data.shapes = [];
+	dv.svg.shapes = dv.svg.map.append('svg:g')
+		.selectAll('path')
+		.data(dv.data.shapes)
+		.enter().append('svg:path')
+			.style('fill', '#048')
+			.style('fill-opacity', 0.35)
 	;
 };
 
@@ -290,41 +364,7 @@ dv.draw.states = function() {
 	;
 };
 
-dv.draw.cities = function() {
-	dv.update.dragged = function(d) {
-		var round = dv.scale.round,
-			fips = d.FIPS,
-			node = d3.select(this)
-				.attr('cx', round(d3.event.x))
-				.attr('cy', round(d3.event.y)),
-			nodeX = round(node.attr('cx')),
-			nodeY = round(node.attr('cy'));
-
-		dv.svg.links
-			.attr('x1', function(d) { if (d.c1fips === fips) { return nodeX; } else { return this.x1.animVal.value; } })
-			.attr('y1', function(d) { if (d.c1fips === fips) { return nodeY; } else { return this.y1.animVal.value; } })
-			.attr('x2', function(d) { if (d.c2fips === fips) { return nodeX; } else { return this.x2.animVal.value; } })
-			.attr('y2', function(d) { if (d.c2fips === fips) { return nodeY; } else { return this.y2.animVal.value; } })
-		;
-
-		dv.svg.labels
-			.attr('dx', function(d) { if (d.FIPS === fips) {  dv.temp = this; return nodeX + dv.scale.r(d.Population) + dv.scale.strokeW(d.Population); } else { return this.attributes[1].value; } })
-			.attr('dy', function(d) { if (d.FIPS === fips) { return nodeY - 2; } else { return this.attributes[2].value; } })
-		;
-	};
-
-	dv.update.dragend = function(d) {
-		d.x = Math.round(dv.scale.x.invert(d3.select(this).attr('cx'))*250)/250;
-		d.y = Math.round(dv.scale.y.invert(d3.select(this).attr('cy'))*250)/250;
-	};
-
-
-	dv.update.drag = d3.behavior.drag()
-		.on('drag', dv.update.dragged)
-		.on("dragend", dv.update.dragend);
-
-	dv.ghost = {};
-
+dv.draw.links = function() {
 	dv.svg.links = dv.svg.map.append('svg:g')
 		.attr('id', 'links')
 		.selectAll('.link')
@@ -336,7 +376,9 @@ dv.draw.cities = function() {
 				.attr('x2', function(d) { return dv.scale.xRound(dv.index.msa[d.c2fips].x); })
 				.attr('y2', function(d) { return dv.scale.yRound(dv.index.msa[d.c2fips].y); })
 	;
+};
 
+dv.draw.cities = function() {
 	dv.svg.cities = dv.svg.map.append('svg:g')
 		.attr('id', 'cities')
 		.selectAll('.city')
@@ -351,10 +393,13 @@ dv.draw.cities = function() {
 				//.style('display', function(d) { if (!d.Highway) { return 'none'; } else { return false; } })
 				.on('mouseover', function(d) { dv.update.cityHover(event, d); })
 				.on('mouseout', dv.hover.hide)
-				.on('click', dv.update.allDistances)
-				.call(dv.update.drag)
+				.on('click', function(d) { dv.update.allDistances(d.FIPS); })
+				//.call(dv.update.drag)
 	;
 
+};
+
+dv.draw.labels = function() {
 	dv.svg.labels = dv.svg.map.append('svg:g')
 		.attr('id', 'labels')
 		.selectAll('.label')
@@ -370,6 +415,48 @@ dv.draw.cities = function() {
 	;
 };
 
+
+/* UPDATE: Update data, SVG, or HTML */
+
+dv.update.shapes = function() {
+	dv.svg.shapes.transition()
+		.attr('d', dv.scale.path)
+	;
+};
+
+dv.update.dragged = function(d) {
+	var round = dv.scale.round,
+		fips = d.FIPS,
+		node = d3.select(this)
+			.attr('cx', round(d3.event.x))
+			.attr('cy', round(d3.event.y)),
+		nodeX = round(node.attr('cx')),
+		nodeY = round(node.attr('cy'));
+
+	dv.svg.links
+		.attr('x1', function(d) { if (d.c1fips === fips) { return nodeX; } else { return this.x1.animVal.value; } })
+		.attr('y1', function(d) { if (d.c1fips === fips) { return nodeY; } else { return this.y1.animVal.value; } })
+		.attr('x2', function(d) { if (d.c2fips === fips) { return nodeX; } else { return this.x2.animVal.value; } })
+		.attr('y2', function(d) { if (d.c2fips === fips) { return nodeY; } else { return this.y2.animVal.value; } })
+	;
+
+	dv.svg.labels
+		.attr('dx', function(d) { if (d.FIPS === fips) {  dv.temp = this; return nodeX + dv.scale.r(d.Population) + dv.scale.strokeW(d.Population); } else { return this.attributes[1].value; } })
+		.attr('dy', function(d) { if (d.FIPS === fips) { return nodeY - 2; } else { return this.attributes[2].value; } })
+	;
+};
+
+dv.update.dragend = function(d) {
+	d.x = Math.round(dv.scale.x.invert(d3.select(this).attr('cx'))*250)/250;
+	d.y = Math.round(dv.scale.y.invert(d3.select(this).attr('cy'))*250)/250;
+};
+
+
+dv.update.drag = d3.behavior.drag()
+	.on('drag', dv.update.dragged)
+	.on("dragend", dv.update.dragend);
+
+// move the cities to their placed locations (subway map)
 dv.update.cityToPlace = function() {
 	var duration = 1000;
 	dv.svg.cities.transition()
@@ -391,6 +478,7 @@ dv.update.cityToPlace = function() {
 	;
 };
 
+// move the cities to their actual lat/lng
 dv.update.cityToGeo = function() {
 	var duration = 1000;
 	dv.svg.cities.transition()
@@ -412,6 +500,7 @@ dv.update.cityToGeo = function() {
 	;
 };
 
+// populate the hover with information about the city
 dv.update.cityHover = function(event, d) {
 	var html = '<h5>' + d.City + ', ' + d.State + '</h5><ul>';
 	html += '<li><strong>Population: </strong>' + d.Population + '</li>';
@@ -421,16 +510,17 @@ dv.update.cityHover = function(event, d) {
 	dv.hover.show(event, html);
 };
 
+// find the distance from an origin (fips) and every other city on the map
 dv.update.allDistances = function(origin) {
 	var i, fips, array,
 		extremes = [99991,99992,99994,20260,24580,13020,99995,99996,12620,39300,35620,47900,47260,27340,34820,16700,33100,27260,15180,88886,88883,41740,42220,14740];
 
 	dv.index.time = {};
-	dv.index.time[origin.FIPS] = 0;
+	dv.index.time[origin] = 0;
 
 	function checkFIPS(fips) {
 		if (!dv.index.time[fips]) {
-			array = dv.calc.graph.findShortestPath(origin.FIPS, fips);
+			array = dv.calc.graph.findShortestPath(origin, fips);
 			dv.update.allTimes(array);
 		}
 	}
@@ -451,16 +541,17 @@ dv.update.allDistances = function(origin) {
 				return dv.scale.fill(dv.index.time[d.FIPS]);
 			} else { return false; }
 		})
-		.style('stroke', function() {
-/*			if (d.City !== 'Junction') {
-				return dv.scale.fill(dv.index.time[d.FIPS]);
-			} else { return false; }
-*/			return "#FFF";
-		})
+		.style('stroke', '#FFF')
 		.style('stroke-width', 2)
+	;
+	dv.svg.links
+		.style('stroke', function(d) {
+			return dv.scale.fill(dv.index.time[d.c1fips]);
+		})
 	;
 };
 
+// updates the travel time between the origin city and every city along the a path (array)
 dv.update.allTimes = function(array) {
 	var i, fips1, fips2,
 		distance = 0,
@@ -474,6 +565,10 @@ dv.update.allTimes = function(array) {
 	}
 };
 
+
+/* CALC: Calculate something and return a value */
+
+// finds the shortest distance between two cities on the network and returns the distance
 dv.calc.distance = function(a,b) {
 	var i, fips1, fips2,
 		distance = 0,
@@ -534,14 +629,25 @@ dv.calc.time = function(meters) {
 	return time;
 };
 
+// calculates the pixel distance between two cities on the map
+dv.calc.xyDist = function(c1, c2) {
+	var dist = Math.abs(c1.x - c2.x);
+	dist += Math.abs(c1.y - c2.y);
+	return dist;
+};
+
+
+/* FORMAT: Take a value and return something that can be displayed  */
+
+// meters to miles
 dv.format.distance = function(meters) {
 	return Math.round(meters/1610*10)/10 + ' miles';
 };
 
-// expects time in hours
-dv.format.time = function(time) {
-	var seconds, hours, minutes;
-	seconds = time * 3600;
+// fractional hours to hhours mminutes sseconds
+dv.format.time = function(hours) {
+	var seconds, minutes;
+	seconds = hours * 3600;
 	hours = Math.floor(seconds/3600);
 	seconds -= hours * 3600;
 	minutes = Math.floor(seconds / 60);
@@ -554,6 +660,38 @@ dv.format.time = function(time) {
 
 	return hours + ' hour' + checkS(hours) + ' ' + minutes + ' minute' + checkS(minutes) + ' and ' + seconds + ' second' + checkS(seconds);
 };
+
+
+/* REUSABLE functions */
+
+// handles multiple streams of asynchronous requests for data, kicks off a corresponding dv.process[streamName]() when the data is all loaded
+dv.update.loadState = function(change, name) {
+	name = name || 'data';
+	change = change || 1;
+	dv.state[name] = dv.state[name] || 0;
+	dv.state[name] += change;
+	if (dv.state[name] === 0) { dv.process[name](); }
+};
+
+// takes an object, converts it to a json string, and writes it out to the dom in a div with id 'console'
+dv.util.objToJSON = function(obj) {
+	var string = JSON.stringify(obj);
+	dv.util.consoleToBody(string);
+};
+
+// sort an array of objects by
+// expects {array: someArray, key: anObjectKey, reverse: boolean} 
+dv.util.aooSort = function(o) {
+	o.array.sort(function(a, b) {
+		if (o.reverse) {
+			return b[o.key] - a[o.key];
+		} else {
+			return a[o.key] - b[o.key];
+		}
+	});
+	return o.array;
+};
+
 
 // takes an array of objects, converts it to a string, and writes it out to the dom in a div with id 'console'
 dv.util.aooToCSV = function(obj) {
@@ -586,12 +724,6 @@ dv.util.aooToCSV = function(obj) {
 		csv +='</br>';
 	}
 	dv.util.consoleToBody(csv);
-};
-
-// takes an object, converts it to a json string, and writes it out to the dom in a div with id 'console'
-dv.util.objToJSON = function(obj) {
-	var string = JSON.stringify(obj);
-	dv.util.consoleToBody(string);
 };
 
 // writes a string out to a div with id 'console'
@@ -643,4 +775,42 @@ dv.hover.hide = function() {
 	if (dv.html.hover) { dv.html.hover.style('visibility','hidden'); }
 };
 
-dv.setup.preData();
+dv.create.start();
+
+/*
+
+
+Notes
+GDP and Population data sourced from 
+Bureau of Economic Analysis
+http://www.bea.gov/iTable/iTable.cfm?ReqID=9&step=1#reqid=9&step=1&isuri=1
+
+* Hanford MSA (25260) combined with Visalia (47300)
+* Visalia: Population: 449254
+* Hanford: Population: 153767
+* Combined:	Population: 603021
+
+* Butte-Helena, MT
+* Source: Wikipedia
+* Helena - FIPS: 30-35600	Population: 76277
+* Butte - FIPS: 30-11397	Population: 33525
+* Combined: Population: 109802
+
+
+* Cities Added
+* Source: Wikipedia
+37775	Lake City, FL	67531
+99996	Montreal, Canada	3824221
+99995	Toronto, Canada	5583064
+99994	Winnipeg, Canada	730018
+99993	Calgary, Canada	1214839
+99992	Edmonton, Canada	1159869
+99991	Vancouver, Canada	2313328
+
+Latitude and Longitude data from Google Geocoding API
+https://developers.google.com/maps/documentation/geocoding/
+
+Distance and travel times from Google Distance Matrix API
+https://developers.google.com/maps/documentation/distancematrix/
+
+*/
