@@ -25,6 +25,8 @@ Large Enhancements
 
 var dv = {
 	data: {},
+	dato: {},
+	keys: {},
 
 	load: {},
 	process: {},
@@ -32,6 +34,7 @@ var dv = {
 
 	dim: {},
 	scale: {},
+	path: {},
 
 	html: {},
 	svg: {},
@@ -45,11 +48,7 @@ var dv = {
 	calc: {},
 	format: {},
 
-	util: {},
-
-//deprecated
-	index: {},
-	sort: {},
+	util: {}
 };
 
 // dv.opt stores all options that can be changed "on the fly"
@@ -81,6 +80,10 @@ dv.opt = {
 		},
 		popmin: 1000000,
 	},
+	rose: {
+		petals: 9,
+		distances: [1,1.5,2]
+	},
 	map: {
 		scale: 1.34,
 		grid: 10
@@ -109,9 +112,10 @@ dv.load.data = function() {
 
 // setup that has to be done after the data is loaded, called from dv.update.data
 dv.process.data = function() {
-	dv.create.index({data: dv.data.msa, indexName: 'msa', col: 'FIPS'});
+	dv.create.index({data: dv.data.msa, indexName: 'msa', keyName: 'fips', col: 'FIPS'});
 	dv.create.network();
 	dv.create.scales();
+	dv.create.paths();
 	dv.draw.links();
 	dv.draw.cities();
 	dv.draw.labels();
@@ -132,6 +136,7 @@ dv.create.variables = function() {
 	dv.html.win.onresize = function() {
 		dv.create.dims();
 	};
+	dv.opt.rose.arc = Math.PI / dv.opt.rose.petals;
 };
 
 dv.create.dims = function() {
@@ -149,9 +154,9 @@ dv.create.dims = function() {
 };
 
 dv.create.network = function() {
-	dv.index.network = {};
+	dv.dato.network = {};
 	var i, link, distance,
-		network = dv.index.network;
+		network = dv.dato.network;
 
 	for (i = dv.data.links.length - 1; i >= 0; i--) {
 		link = dv.data.links[i];
@@ -166,17 +171,19 @@ dv.create.network = function() {
 
 // expects {data: someArray, indexName: 'indexName', col: 'someColName'}
 dv.create.index = function(opt) {
-	dv.index[opt.name] = {};
-	dv.index[opt.indexName] = {};
+	dv.dato[opt.indexName] = {};
+	dv.keys[opt.keyName] = [];
 	var i, row, value,
 		col = opt.col,
 		data = opt.data,
-		index = dv.index[opt.indexName];
+		index = dv.dato[opt.indexName],
+		key = dv.keys[opt.keyName];
 
 	for (i = data.length - 1; i >= 0; i--) {
 		row = data[i];
 		value = row[col];
 		index[value] = row;
+		key.push(value);
 	}
 };
 
@@ -190,7 +197,7 @@ dv.create.scales = function() {
 		.translate([scale / 2.7, scale / 3.5])
 	;
 
-	dv.scale.path = d3.geo.path()
+	dv.path.shape = d3.geo.path()
 		.projection(dv.scale.projection)
 	;
 
@@ -240,47 +247,68 @@ dv.create.scales = function() {
 		return dv.scale.round(dv.scale.y(num));
 	};
 
-	dv.scale.shape = d3.svg.line()
+};
+
+dv.create.paths = function() {
+	dv.path.shape = d3.svg.line()
 		.x(function(d) { return dv.scale.xRound(d.x); })
 		.y(function(d) { return dv.scale.xRound(d.y); })
 		.interpolate('cardinal-closed')
 	;
+
+	dv.path.arc = d3.svg.arc()
+		.outerRadius(function(d) { return dv.scale.x(d); })
+		.innerRadius(0)
+		.startAngle(function(d, i) { return (2 * i * dv.opt.rose.arc) - dv.opt.rose.arc; })
+		.endAngle(function(d, i) { return (2 * i * dv.opt.rose.arc) + dv.opt.rose.arc; })
+	;
 };
 
-dv.create.shapes = function(oFIPS) {
-	if (!oFIPS) { oFIPS = 19740; }
+dv.create.rose = function(oFIPS) {
+	var i, dist,
+		length = dv.opt.rose.distances.length;
 	dv.update.allDistances(oFIPS);
-	dv.data.shapes.push(dv.create.shape(dv.create.subset(0,1),oFIPS));
+	dv.update.allAngles(oFIPS);
+	for (i = 0; i < length; i++) {
+		dist = dv.opt.rose.distances[i];
+		dv.create.petals(dist, oFIPS);
+	}
+
+/*	dv.data.shapes = [];
 	dv.data.shapes.push(dv.create.shape(dv.create.subset(1,2),oFIPS));
-//	dv.data.shapes.push(dv.create.shape(dv.create.subset(2,3),oFIPS));
-//	dv.data.shapes.push(dv.create.shape(dv.create.subset(3,4),oFIPS));
-	dv.svg.shapes = dv.svg.map.append('svg:g')
-		.selectAll('path')
-		.data(dv.data.shapes)
-		.enter().append('svg:path')
-			.style('fill', '#048')
-			.style('fill-opacity', 0.35)
-			.attr('d', dv.scale.shape)
-		;
-//	dv.update.shapes();
+	dv.data.shapes.push(dv.create.shape(dv.create.subset(2,3),oFIPS));
+	dv.data.shapes.push(dv.create.shape(dv.create.subset(3,10),oFIPS));
+	dv.data.shapes.push(dv.create.shape(dv.create.subset(2,3),oFIPS));
+	dv.data.shapes.push(dv.create.shape(dv.create.subset(3,4),oFIPS));
+	dv.update.shapes();
+*/
 };
 
-dv.create.subset = function(min,max) {
-	var i, time, subset = [];
-	if (!dv.index.time) { dv.update.allDistances(19740); }
-	dv.data.fips = dv.data.fips || d3.keys(dv.index.time);
-	for (i = dv.data.fips.length - 1; i >= 0; i--) {
-		time = dv.index.time[dv.data.fips[i]];
-		if (time > min && time <= max) {
-			subset.push(dv.data.fips[i]);
+dv.create.petals = function(max, oFIPS) {
+	var i, fips, time, city, petal, dist,
+		origin = dv.dato.msa[oFIPS],
+		rose = [];
+	for (i = dv.opt.rose.petals - 1; i >= 0; i--) {
+		rose[i] = 0;
+	}
+	for (i = dv.keys.fips.length - 1; i >= 0; i--) {
+		fips = dv.keys.fips[i];
+		time = dv.dato.time[fips];
+		city = dv.dato.msa[fips];
+		petal = dv.dato.petal[fips];
+		if (time < max) {
+			dist = dv.calc.xyDist(city, origin);
+			if (!rose[petal] || dist > rose[petal]) {
+				rose[petal] = dist;
+			}
 		}
 	}
-	return subset;
+	dv.draw.rose(rose, origin);
 };
 
-dv.create.shape = function(subset, oFIPS) {
-	var i, i2, i3, i4, j, fips, city, c1, c2, c3, c4,
-		origin = dv.index.msa[oFIPS],
+dv.create.shapeOld = function(subset, oFIPS) {
+	var i, i2, i3, i4, i5, c1, c2, c3, c4, c5, fips, city,
+		origin = dv.dato.msa[oFIPS],
 		NE = [],
 		NW = [],
 		SW = [],
@@ -289,8 +317,8 @@ dv.create.shape = function(subset, oFIPS) {
 
 	for (i = subset.length - 1; i >= 0; i--) {
 		fips = subset[i];
-		//cities[fips] = dv.index.msa[fips];
-		city = dv.index.msa[fips];
+		//cities[fips] = dv.dato.msa[fips];
+		city = dv.dato.msa[fips];
 		if (city.y >= origin.y) {
 			if (city.x <= origin.x) { SW.push(city); } else { SE.push(city); }
 		} else {
@@ -303,26 +331,42 @@ dv.create.shape = function(subset, oFIPS) {
 	shape.NW = dv.util.aooSort({array: NW, key: 'x'});
 
 	shape = NE.concat(SE,SW,NW);
-	i = 0; j = 0;
-	while (i < shape.length && shape.length >= 3 && j < 60) {
+	i = 0;
+	while (i < shape.length && shape.length >= 3) {
 		i2 = (i+1)%shape.length;
 		i3 = (i+2)%shape.length;
 		i4 = (i+3)%shape.length;
+		i5 = (i+4)%shape.length;
 		c1 = dv.calc.xyDist(shape[i], origin);
 		c2 = dv.calc.xyDist(shape[i2], origin);
 		c3 = dv.calc.xyDist(shape[i3], origin);
 		c4 = dv.calc.xyDist(shape[i4], origin);
-		if ( (c2 < c1 && c2 < c4) && (c3 < c1 && c3 < c4) ) {
+		c5 = dv.calc.xyDist(shape[i5], origin);
+		if ( (c2 < c1 && c2 < c5) && (c3 < c1 && c3 < c5)  && (c4 < c1 && c4 < c5) ) {
+			shape.splice(i2,3);
+			if (i >= shape.length) { i = shape.length - 1; }
+		} else if ( (c2 < c1 && c2 < c4) && (c3 < c1 && c3 < c4) ) {
 			shape.splice(i2,2);
 			if (i >= shape.length) { i = shape.length - 1; }
-			j++;
 		} else if (c2 < c1 && c2 < c3) {
 			shape.splice(i2,1);
 			if (i >= shape.length) { i = shape.length - 1; }
-			j++;
 		} else { i++; }
 	}
 	return shape;
+};
+
+dv.create.subset = function(min,max) {
+	var i, time, subset = [];
+	if (!dv.dato.time) { dv.update.allDistances(19740); }
+	dv.data.fips = dv.data.fips || d3.keys(dv.dato.time);
+	for (i = dv.data.fips.length - 1; i >= 0; i--) {
+		time = dv.dato.time[dv.data.fips[i]];
+		if (time > min && time <= max) {
+			subset.push(dv.data.fips[i]);
+		}
+	}
+	return subset;
 };
 
 /* WRITE: Write out html elements */
@@ -360,7 +404,7 @@ dv.draw.states = function() {
 			.enter().append('svg:path')
 				.attr('name', function(d) { return d.properties.name; })
 				.attr('class', 'state')
-				.attr('d', dv.scale.path)
+				.attr('d', dv.path.shape)
 	;
 };
 
@@ -371,10 +415,10 @@ dv.draw.links = function() {
 			.data(dv.data.links)
 			.enter().append('svg:line')
 				.attr('class', 'link')
-				.attr('x1', function(d) { return dv.scale.xRound(dv.index.msa[d.c1fips].x); })
-				.attr('y1', function(d) { return dv.scale.yRound(dv.index.msa[d.c1fips].y); })
-				.attr('x2', function(d) { return dv.scale.xRound(dv.index.msa[d.c2fips].x); })
-				.attr('y2', function(d) { return dv.scale.yRound(dv.index.msa[d.c2fips].y); })
+				.attr('x1', function(d) { return dv.scale.xRound(dv.dato.msa[d.c1fips].x); })
+				.attr('y1', function(d) { return dv.scale.yRound(dv.dato.msa[d.c1fips].y); })
+				.attr('x2', function(d) { return dv.scale.xRound(dv.dato.msa[d.c2fips].x); })
+				.attr('y2', function(d) { return dv.scale.yRound(dv.dato.msa[d.c2fips].y); })
 	;
 };
 
@@ -393,7 +437,7 @@ dv.draw.cities = function() {
 				//.style('display', function(d) { if (!d.Highway) { return 'none'; } else { return false; } })
 				.on('mouseover', function(d) { dv.update.cityHover(event, d); })
 				.on('mouseout', dv.hover.hide)
-				.on('click', function(d) { dv.update.allDistances(d.FIPS); })
+				.on('click', function(d) { 	dv.create.rose(d.FIPS); })
 				//.call(dv.update.drag)
 	;
 
@@ -415,12 +459,24 @@ dv.draw.labels = function() {
 	;
 };
 
+dv.draw.rose = function(rose, origin) {
+	dv.svg.rose = dv.svg.rose || [];
+	dv.svg.rose[dv.svg.rose.length] = dv.svg.main.append('svg:g')
+		.attr('transform', 'translate(' + dv.scale.xRound(origin.x) + ',' + dv.scale.yRound(origin.y) + ')')
+		.attr('class','rose')
+		.selectAll('path')
+		.data(rose)
+			.enter().append('svg:path')
+			.attr('d', dv.path.arc)
+	;
+};
+
 
 /* UPDATE: Update data, SVG, or HTML */
 
 dv.update.shapes = function() {
 	dv.svg.shapes.transition()
-		.attr('d', dv.scale.path)
+		.attr('d', dv.path.shape)
 	;
 };
 
@@ -471,10 +527,10 @@ dv.update.cityToPlace = function() {
 	;
 	dv.svg.links.transition()
 		.duration(duration)
-		.attr('x1', function(d) { return dv.scale.xRound(dv.index.msa[d.c1fips].x); })
-		.attr('y1', function(d) { return dv.scale.yRound(dv.index.msa[d.c1fips].y); })
-		.attr('x2', function(d) { return dv.scale.xRound(dv.index.msa[d.c2fips].x); })
-		.attr('y2', function(d) { return dv.scale.yRound(dv.index.msa[d.c2fips].y); })
+		.attr('x1', function(d) { return dv.scale.xRound(dv.dato.msa[d.c1fips].x); })
+		.attr('y1', function(d) { return dv.scale.yRound(dv.dato.msa[d.c1fips].y); })
+		.attr('x2', function(d) { return dv.scale.xRound(dv.dato.msa[d.c2fips].x); })
+		.attr('y2', function(d) { return dv.scale.yRound(dv.dato.msa[d.c2fips].y); })
 	;
 };
 
@@ -504,8 +560,16 @@ dv.update.cityToGeo = function() {
 dv.update.cityHover = function(event, d) {
 	var html = '<h5>' + d.City + ', ' + d.State + '</h5><ul>';
 	html += '<li><strong>Population: </strong>' + d.Population + '</li>';
-	html += '<li><strong>Highway(s): </strong>' + d.Highway + '</li>';
 	html += '<li><strong>FIPS: </strong>' + d.FIPS + '</li>';
+	if (dv.dato.time) {
+		html += '<li><strong>Time: </strong>' + dv.format.time(dv.dato.time[d.FIPS]) + '</li>';
+	}
+	if (dv.dato.angle) {
+		html += '<li><strong>Angle: </strong>' + dv.dato.angle[d.FIPS] + ' degrees</li>';
+	}
+	if (dv.dato.petal) {
+		html += '<li><strong>Petal: </strong>' + dv.dato.petal[d.FIPS] + '</li>';
+	}
 	html += '</ul>';
 	dv.hover.show(event, html);
 };
@@ -515,11 +579,11 @@ dv.update.allDistances = function(origin) {
 	var i, fips, array,
 		extremes = [99991,99992,99994,20260,24580,13020,99995,99996,12620,39300,35620,47900,47260,27340,34820,16700,33100,27260,15180,88886,88883,41740,42220,14740];
 
-	dv.index.time = {};
-	dv.index.time[origin] = 0;
+	dv.dato.time = {};
+	dv.dato.time[origin] = 0;
 
 	function checkFIPS(fips) {
-		if (!dv.index.time[fips]) {
+		if (!dv.dato.time[fips]) {
 			array = dv.calc.graph.findShortestPath(origin, fips);
 			dv.update.allTimes(array);
 		}
@@ -534,11 +598,36 @@ dv.update.allDistances = function(origin) {
 		fips = dv.data.msa[i].FIPS;
 		checkFIPS(fips);
 	}
+};
 
+dv.update.allAngles = function(oFIPS) {
+	var i, city, petal, angle,
+		petals = dv.opt.rose.petals,
+		arc = dv.opt.rose.arc,
+		origin = dv.dato.msa[oFIPS];
+	dv.dato.angle = {};
+	dv.dato.petal = {};
+
+	for (i = dv.data.msa.length - 1; i >= 0; i--) {
+		city = dv.data.msa[i];
+		angle = dv.util.getRad(origin.x, origin.y, city.x, city.y);
+		dv.dato.angle[city.FIPS] = Math.round(angle * 180 / Math.PI);
+
+		// This shifts the petals 45deg to the right so that a petal consists of the cities on either side of a given angle
+		petal = Math.floor(angle / arc);
+		petal = (petal + 1) % (petals * 2);
+		petal = Math.floor(petal / 2);
+		dv.dato.petal[city.FIPS] = petal;
+	}
+};
+
+
+
+dv.update.fadeMap = function() {
 	dv.svg.cities
 		.style('fill', function(d) {
 			if (d.City !== 'Junction') {
-				return dv.scale.fill(dv.index.time[d.FIPS]);
+				return dv.scale.fill(dv.dato.time[d.FIPS]);
 			} else { return false; }
 		})
 		.style('stroke', '#FFF')
@@ -546,7 +635,7 @@ dv.update.allDistances = function(origin) {
 	;
 	dv.svg.links
 		.style('stroke', function(d) {
-			return dv.scale.fill(dv.index.time[d.c1fips]);
+			return dv.scale.fill(dv.dato.time[d.c1fips]);
 		})
 	;
 };
@@ -560,8 +649,8 @@ dv.update.allTimes = function(array) {
 	for (i = 1; i < length; i++) {
 		fips1 = array[i];
 		fips2 = array[i-1];
-		distance += dv.index.network[fips1][fips2].dist;
-		dv.index.time[fips1] = dv.index.time[fips1] || dv.calc.time(distance);
+		distance += dv.dato.network[fips1][fips2].dist;
+		dv.dato.time[fips1] = dv.dato.time[fips1] || dv.calc.time(distance);
 	}
 };
 
@@ -577,7 +666,7 @@ dv.calc.distance = function(a,b) {
 	for (i = array.length - 1; i > 0; i--) {
 		fips1 = array[i];
 		fips2 = array[i-1];
-		distance += dv.index.network[fips1][fips2].dist;
+		distance += dv.dato.network[fips1][fips2].dist;
 	}
 	return distance;
 };
@@ -631,9 +720,7 @@ dv.calc.time = function(meters) {
 
 // calculates the pixel distance between two cities on the map
 dv.calc.xyDist = function(c1, c2) {
-	var dist = Math.abs(c1.x - c2.x);
-	dist += Math.abs(c1.y - c2.y);
-	return dist;
+	return Math.sqrt(Math.pow((c1.x - c2.x),2) + Math.pow((c1.y - c2.y),2));
 };
 
 
@@ -646,7 +733,7 @@ dv.format.distance = function(meters) {
 
 // fractional hours to hhours mminutes sseconds
 dv.format.time = function(hours) {
-	var seconds, minutes;
+	var seconds, minutes, string = '';
 	seconds = hours * 3600;
 	hours = Math.floor(seconds/3600);
 	seconds -= hours * 3600;
@@ -657,8 +744,9 @@ dv.format.time = function(hours) {
 	function checkS(num) {
 		if (num > 1 || num === 0) { return 's'; } else { return ''; }
 	}
-
-	return hours + ' hour' + checkS(hours) + ' ' + minutes + ' minute' + checkS(minutes) + ' and ' + seconds + ' second' + checkS(seconds);
+	if (hours > 0) { string = hours + ' hour' + checkS(hours) + ' '; }
+	if (minutes > 0) { string +=  minutes + ' minute' + checkS(minutes); }
+	return string;
 };
 
 
@@ -679,7 +767,7 @@ dv.util.objToJSON = function(obj) {
 	dv.util.consoleToBody(string);
 };
 
-// sort an array of objects by
+// sort an array of objects by a given key
 // expects {array: someArray, key: anObjectKey, reverse: boolean} 
 dv.util.aooSort = function(o) {
 	o.array.sort(function(a, b) {
@@ -690,6 +778,19 @@ dv.util.aooSort = function(o) {
 		}
 	});
 	return o.array;
+};
+
+// the angle in radians between two points relative to the first point, returns a positive number between 0 (3 o'clock)
+dv.util.getRad = function(x1,y1,x2,y2) {
+	var rad = x2 - x1 === 0 ? Math.PI / 2 : Math.atan((y1 - y2)/(x1 - x2));
+	if (x2 - x1 === 0 && y2 - y1 < 0) {
+		rad = 0;
+	} else if (x2 - x1 < 0) {
+		rad = 1.5 * Math.PI + rad;
+	} else {
+		rad = Math.PI / 2 + rad;
+	}
+	return rad;
 };
 
 
