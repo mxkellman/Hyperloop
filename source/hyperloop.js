@@ -79,10 +79,14 @@ dv.opt = {
 			max: 20
 		},
 		popmin: 1000000,
+		near: {
+			max: 900 * 1610,
+			min: 60 * 1610,
+		},
 	},
 	rose: {
-		petals: 9,
-		distances: [1,1.5,2]
+		petals: 5,
+		distances: [1,2,3,4,5]
 	},
 	map: {
 		scale: 1.34,
@@ -137,6 +141,35 @@ dv.create.variables = function() {
 		dv.create.dims();
 	};
 	dv.opt.rose.arc = Math.PI / dv.opt.rose.petals;
+};
+
+dv.create.majorDistances = function() {
+	var i, city;
+	for (i = dv.data.msa.length - 1; i >= 0; i--) {
+		city = dv.data.msa[i];
+		console.log(city.City);
+		dv.create.bigNearbyCities(city);
+	}
+};
+
+dv.create.bigNearbyCities = function(origin) {
+	//var i, i2, city, dist, length, nearby, candidate;
+	var j=0,
+		nearby, i, city, dist;
+	dv.update.allDistances(origin.FIPS);
+	nearby = dv.data.msa.slice(0);
+	dv.util.aooSort({array: nearby, key: 'Population'});
+	i = nearby.length - 1;
+	while (j < 5 && i >= 0) {
+		city = nearby[i];
+		dist = dv.dato.dist[city.FIPS];
+		if (dist <= dv.opt.city.near.max && dist >= dv.opt.city.near.min) {
+			origin['nearFIPS'+j] = city.FIPS;
+			origin['nearDist'+j] = dist;
+			j++;
+		}
+		i--;
+	}
 };
 
 dv.create.dims = function() {
@@ -219,9 +252,11 @@ dv.create.scales = function() {
 		.rangeRound([city.font.min, city.font.max])
 	;
 
-	dv.scale.fill = d3.scale.linear()
-		.domain([0,5])
-		.range(['#048','#ffeeee'])
+	dv.scale.fill = d3.scale.quantize()
+		.domain([5,0])
+		.range(["#7f0000","#d7301f","#fc8d59","#4292c6","#08519c"])
+		//.range(["#67001f","#b2182b","#d6604d","#f4a582","#fddbc7","#d1e5f0","#92c5de","#4393c3","#2166ac","#053061"])
+		//.range(['#048','#ffeeee'])
 	;
 
 	dv.scale.round = function(num) {
@@ -273,15 +308,6 @@ dv.create.rose = function(oFIPS) {
 		dist = dv.opt.rose.distances[i];
 		dv.create.petals(dist, oFIPS);
 	}
-
-/*	dv.data.shapes = [];
-	dv.data.shapes.push(dv.create.shape(dv.create.subset(1,2),oFIPS));
-	dv.data.shapes.push(dv.create.shape(dv.create.subset(2,3),oFIPS));
-	dv.data.shapes.push(dv.create.shape(dv.create.subset(3,10),oFIPS));
-	dv.data.shapes.push(dv.create.shape(dv.create.subset(2,3),oFIPS));
-	dv.data.shapes.push(dv.create.shape(dv.create.subset(3,4),oFIPS));
-	dv.update.shapes();
-*/
 };
 
 dv.create.petals = function(max, oFIPS) {
@@ -437,7 +463,8 @@ dv.draw.cities = function() {
 				//.style('display', function(d) { if (!d.Highway) { return 'none'; } else { return false; } })
 				.on('mouseover', function(d) { dv.update.cityHover(event, d); })
 				.on('mouseout', dv.hover.hide)
-				.on('click', function(d) { 	dv.create.rose(d.FIPS); })
+				//.on('click', function(d) { dv.create.rose(d.FIPS); })
+				.on('click', function(d) { dv.update.fadeMap(d.FIPS); })
 				//.call(dv.update.drag)
 	;
 
@@ -558,11 +585,21 @@ dv.update.cityToGeo = function() {
 
 // populate the hover with information about the city
 dv.update.cityHover = function(event, d) {
-	var html = '<h5>' + d.City + ', ' + d.State + '</h5><ul>';
-	html += '<li><strong>Population: </strong>' + d.Population + '</li>';
-	html += '<li><strong>FIPS: </strong>' + d.FIPS + '</li>';
-	if (dv.dato.time) {
+	var html = '<h5>' + d.City + ', ' + d.State + '</h5><ul>',
+		city, dist;
+
+	//html += '<li><strong>Population: </strong>' + dv.format.number(d.Population) + '</li>';
+	//html += '<li><strong>FIPS: </strong>' + d.FIPS + '</li>';
+/*	if (dv.dato.dist) {
+		html += '<li><strong>Distance: </strong>' + dv.format.dist(dv.dato.dist[d.FIPS]) + '</li>';
+	}
+*/	if (dv.dato.time) {
 		html += '<li><strong>Time: </strong>' + dv.format.time(dv.dato.time[d.FIPS]) + '</li>';
+	}
+	for (var i=0;i<5;i++) {
+		city = 'nearFIPS' + i;
+		dist = 'nearDist' + i;
+		html += '<li><strong>' + dv.dato.msa[d[city]].City + ': </strong>' + dv.format.time(dv.calc.time(d[dist])) + '</li>';
 	}
 	if (dv.dato.angle) {
 		html += '<li><strong>Angle: </strong>' + dv.dato.angle[d.FIPS] + ' degrees</li>';
@@ -575,16 +612,18 @@ dv.update.cityHover = function(event, d) {
 };
 
 // find the distance from an origin (fips) and every other city on the map
-dv.update.allDistances = function(origin) {
+dv.update.allDistances = function(oFIPS) {
 	var i, fips, array,
 		extremes = [99991,99992,99994,20260,24580,13020,99995,99996,12620,39300,35620,47900,47260,27340,34820,16700,33100,27260,15180,88886,88883,41740,42220,14740];
 
+	dv.dato.dist = {};
 	dv.dato.time = {};
-	dv.dato.time[origin] = 0;
+	dv.dato.dist[oFIPS] = 0;
+	dv.dato.time[oFIPS] = 0;
 
 	function checkFIPS(fips) {
 		if (!dv.dato.time[fips]) {
-			array = dv.calc.graph.findShortestPath(origin, fips);
+			array = dv.calc.graph.findShortestPath(oFIPS, fips);
 			dv.update.allTimes(array);
 		}
 	}
@@ -623,7 +662,8 @@ dv.update.allAngles = function(oFIPS) {
 
 
 
-dv.update.fadeMap = function() {
+dv.update.fadeMap = function(oFIPS) {
+	dv.update.allDistances(oFIPS);
 	dv.svg.cities
 		.style('fill', function(d) {
 			if (d.City !== 'Junction') {
@@ -650,6 +690,7 @@ dv.update.allTimes = function(array) {
 		fips1 = array[i];
 		fips2 = array[i-1];
 		distance += dv.dato.network[fips1][fips2].dist;
+		dv.dato.dist[fips1] = distance;
 		dv.dato.time[fips1] = dv.dato.time[fips1] || dv.calc.time(distance);
 	}
 };
@@ -727,7 +768,7 @@ dv.calc.xyDist = function(c1, c2) {
 /* FORMAT: Take a value and return something that can be displayed  */
 
 // meters to miles
-dv.format.distance = function(meters) {
+dv.format.dist = function(meters) {
 	return Math.round(meters/1610*10)/10 + ' miles';
 };
 
@@ -749,6 +790,20 @@ dv.format.time = function(hours) {
 	return string;
 };
 
+// Make numbers human readable
+// Takes a number as an input (num), returns a string
+dv.format.number = function(num) {
+	var factor = 1;
+	var abbvr = "";
+	if (num < 999) { return 0; }
+	//else if (num < 999999) { factor = 100; abbvr = "K"; }
+	else if (num < 999999999) { factor = 100000; abbvr = "M"; }
+	else if (num < 999999999999) { factor = 100000000; abbvr =  "B"; }
+	else if (num < 999999999999999) { factor = 100000000000; abbvr =  "T"; }
+	num = Math.round(num/factor)/10 + abbvr;
+	return num;
+};
+
 
 /* REUSABLE functions */
 
@@ -768,7 +823,7 @@ dv.util.objToJSON = function(obj) {
 };
 
 // sort an array of objects by a given key
-// expects {array: someArray, key: anObjectKey, reverse: boolean} 
+// expects {array: someArray, key: anObjectKey, reverse: false} 
 dv.util.aooSort = function(o) {
 	o.array.sort(function(a, b) {
 		if (o.reverse) {
