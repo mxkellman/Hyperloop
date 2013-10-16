@@ -1,4 +1,4 @@
-//@import 'scss/foundation.scss';
+@import 'scss/foundation.scss';
 
 ul, ol {
 	margin: 0;
@@ -51,7 +51,7 @@ svg {
 			text-shadow: -1px -1px 1px rgba(#FFF, 1), 1px 1px 1px rgba(#FFF, 1), -1px 1px 1px rgba(#FFF, 1), 1px -1px 1px rgba(#FFF, 1);
 		}
 	}
-	.rose {
+	#rose {
 		fill: #048;
 		fill-opacity: 0.35;
 		stroke: #fff;
