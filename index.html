@@ -4,15 +4,28 @@
 		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
 		<title>Hyperloop Alpha</title>
 
-		<link type="text/css" rel="stylesheet" href="css/style.css"/>
-<!--		
+		<link type="text/css" rel="stylesheet" href="css/hyperloop.css"/>
 		<link href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700|Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
+<!--		
+		<link type="text/css" rel="stylesheet" href="css/foundation.css"/>
 		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC1Vr6PKgLMyUNynZrcpfn0Xy0ipe44xvo&sensor=false"></script>
+		<script type="text/javascript" src="js/d3.min.js"></script>
+		<script type="text/javascript" src="js/graph.js"></script>
 -->
 	</head>
 	<body>
-		<script type="text/javascript" src="js/d3.min.js"></script>
-		<script type="text/javascript" src="js/graph.js"></script>
-		<script type="text/javascript" src="source/hyperloop.js"></script>
+		<h1>Nationwide Hyperloop Network</h1>
+		<div class="explanation">This map shows the time it would take to travel using a nationwide hyperloop network.  Mouse over a city to see travel times to the largest cities within 900 miles. </div>
+		<div class="action">Click a city to calculate travel times from that location.</div>
+
+		<div class="key"><span class="title">Travel times</span> 
+			<span class="label one">&lt; 1 hours</span>
+			<span class="label two">&lt; 2 hours</span>
+			<span class="label three">&lt; 3 hours</span>
+			<span class="label four">&lt; 4 hours</span>
+			<span class="label five">&gt; 4 hours</span>
+		</div>
+
+		<script type="text/javascript" src="js/hyperloop.min.js"></script>
 	</body>
 </html>

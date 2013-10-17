@@ -1,0 +1,140 @@
+@import 'scss/foundation.scss';
+
+body {
+	margin: 20px;
+}
+
+h1 {
+	font-weight: 100;
+	margin-bottom: 5px;
+}
+
+ul, ol {
+	margin: 0px;
+	list-style: none;
+}
+
+.explanation {
+	font-weight: 100;
+	margin-bottom: 10px;
+	max-width: 600px;
+	line-height: 18px;
+}
+.action {
+	margin-bottom: 10px;
+}
+
+.key {
+	font-size: 11px;
+	.label {
+		color: #333;
+		padding: 7px;
+		margin-right: 5px;
+	}
+	.title {
+		color: #666;
+		text-transform: uppercase;
+		padding-right: 5px;
+	}
+	.one {
+		background-color: rgba(#08519c, 0.25);
+		border-left: 6px solid #08519c;
+	}
+	.two {
+		background-color: rgba(#4292c6, 0.25);
+		border-left: 6px solid #4292c6;
+	}
+	.three {
+		background-color: rgba(#fc8d59, 0.25);
+		border-left: 6px solid #fc8d59;
+	}
+	.four {
+		background-color: rgba(#d7301f, 0.25);
+		border-left: 6px solid #d7301f;
+	}
+	.five {
+		background-color: rgba(#7f0000, 0.25);
+		border-left: 6px solid #7f0000;
+	}
+	margin-bottom: 20px;
+}
+
+svg {
+	#states {
+		path {
+		  fill: none;
+		  stroke: #DDE;
+		  stroke-width: 1px;
+		}
+	}
+	#cities {
+		fill: #FFF;
+		stroke: #048;
+		stroke-width: 2px;
+	}
+	#links {
+		stroke: #048;
+		stroke-width: 2px;
+		pointer-events: none;
+	}
+	$textShadow: 0.5;
+	#labels {
+		opacity: 1;
+		pointer-events: none;
+		.label {
+			fill: #446;
+			font-weight: 100;
+			text-shadow: -1px -1px 1px rgba(#FFF, $textShadow), 1px 1px 1px rgba(#FFF, $textShadow), -1px 1px 1px rgba(#FFF, $textShadow), 1px -1px 1px rgba(#FFF, $textShadow);
+		}
+	}
+	#rose {
+		fill-opacity: 0.25;
+		stroke: #fff;
+		stroke-opacity: 0.35;
+		pointer-events: none;
+	}
+
+}
+
+#hover {
+	visibility: none;
+	padding: 15px;
+	background: rgba(#f5f5fa, 0.9);
+	border: 1px solid #BBC;
+	color: #333;
+	z-index: 1000;
+	position: absolute;
+	border-radius: 8px;
+	font-size: 16px;
+	font-weight: 100;
+
+	ul {
+		padding: 0px;
+		li {
+			strong {
+				font-weight: 400;
+			}
+		}
+	}
+	h5 {
+		font-weight: 300;
+		font-size: 20px;
+		padding-bottom: 0px;
+		color: #333;
+	}
+	table {
+		margin: 10px 0 0px 0;
+		thead {
+			font-size: 11px;
+			background: #eaeaf3;
+			text-transform: uppercase;
+			td {
+				color: #666;
+				padding: 5px;
+			}
+		}
+		td {
+			text-align: right;
+		}
+	}
+}
