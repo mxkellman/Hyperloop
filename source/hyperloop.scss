@@ -1,12 +1,94 @@
-@import 'scss/foundation.scss';
+//
+// Table Variables
+//
+
+// These control the background color for the table and even rows
+$table-bg: #fff !default;
+$table-even-row-bg: #f9f9f9 !default;
+
+// These control the table cell border style
+$table-border-style: solid !default;
+$table-border-size: 1px !default;
+$table-border-color: #ddd !default;
+
+// These control the table head styles
+$table-head-bg: #f5f5f5 !default;
+$table-head-font-size: 14px !default;
+$table-head-font-color: #222 !default;
+$table-head-font-weight: bold !default;
+$table-head-padding: 8px 10px 10px !default;
+
+// These control the row padding and font styles
+$table-row-padding: 9px 10px !default;
+$table-row-font-size: 14px !default;
+$table-row-font-color: #222 !default;
+$table-line-height: 18px !default;
+
+// These are for controlling the display and margin of tables
+$table-display: table-cell !default;
+$table-margin-bottom: 20px !default;
+
+
+//
+// Table Mixin
+//
+@mixin table {
+	background: $table-bg;
+	margin-bottom: $table-margin-bottom;
+	border: $table-border-style $table-border-size $table-border-color;
+
+	thead,
+	tfoot {
+		background: $table-head-bg;
+		font-weight: $table-head-font-weight;
+
+		tr {
+			th,
+			td {
+				padding: $table-head-padding;
+				font-size: $table-head-font-size;
+				color: $table-head-font-color;
+			}
+		}
+	}
+
+	tr {
+		th,
+		td {
+			padding: $table-row-padding;
+			font-size: $table-row-font-size;
+			color: $table-row-font-color;
+		}
+
+		&.even,
+		&.alt,
+		&:nth-of-type(even) { background: $table-even-row-bg; }
+	}
+
+	thead tr th,
+	tfoot tr th,
+	tbody tr td,
+	tr td,
+	tfoot tr td { display: $table-display; line-height: $table-line-height; }
+}
+
+table {
+	@include table;
+}
 
 body {
 	margin: 20px;
+	font-family: "Open Sans", "Helvetica", Helvetica, Arial, sans-serif;
 }
 
 h1 {
 	font-weight: 100;
 	margin-bottom: 5px;
+}
+
+h1, h2, h3, h4, h5 {
+	padding: 0px;
+	margin: 0px 0px 10px 0px;
 }
 
 ul, ol {
@@ -27,6 +109,13 @@ ul, ol {
 .key {
 	font-size: 11px;
 	.label {
+		font-weight: bold;
+		text-align: center;
+		text-decoration: none;
+		line-height: 1;
+		white-space: nowrap;
+		display: inline-block;
+		position: relative;
 		color: #333;
 		padding: 7px;
 		margin-right: 5px;
@@ -70,21 +159,20 @@ svg {
 	#cities {
 		fill: #FFF;
 		stroke: #048;
-		stroke-width: 2px;
 	}
 	#links {
 		stroke: #048;
 		stroke-width: 2px;
 		pointer-events: none;
 	}
-	$textShadow: 0.5;
 	#labels {
 		opacity: 1;
 		pointer-events: none;
 		.label {
-			fill: #446;
-			font-weight: 100;
-			text-shadow: -1px -1px 1px rgba(#FFF, $textShadow), 1px 1px 1px rgba(#FFF, $textShadow), -1px 1px 1px rgba(#FFF, $textShadow), 1px -1px 1px rgba(#FFF, $textShadow);
+			stroke: rgba(#fff, 0.35);
+			stroke-width: 0.5px;
+			fill: #224;		
+			font-weight: 600;
 		}
 	}
 	#rose {
@@ -97,7 +185,7 @@ svg {
 }
 
 #hover {
-	visibility: none;
+	visibility: hidden;
 	padding: 15px;
 	background: rgba(#f5f5fa, 0.9);
 	border: 1px solid #BBC;
@@ -105,7 +193,7 @@ svg {
 	z-index: 1000;
 	position: absolute;
 	border-radius: 8px;
-	font-size: 16px;
+	font-size: 14px;
 	font-weight: 100;
 
 	ul {
@@ -119,21 +207,21 @@ svg {
 	h5 {
 		font-weight: 300;
 		font-size: 20px;
-		padding-bottom: 0px;
 		color: #333;
 	}
 	table {
 		margin: 10px 0 0px 0;
 		thead {
-			font-size: 11px;
 			background: #eaeaf3;
-			text-transform: uppercase;
 			td {
+				font-size: 11px;
+				text-transform: uppercase;
 				color: #666;
-				padding: 5px;
+				padding: 3px 8px;
 			}
 		}
 		td {
+			padding: 5px 8px;
 			text-align: right;
 		}
 	}
