@@ -120,20 +120,20 @@ dv.create.dims = function() {
 		w: dv.html.win.innerWidth || dv.html.win.clientWidth || dv.html.win.clientWidth,
 		h: dv.html.win.innerHeight || dv.html.win.clientHeight || dv.html.win.clientHeight
 	};
-/*	dv.dim.body = {
+	dv.dim.body = {
 		top: parseInt(dv.html.body.style('margin-top'), 10),
 		right: parseInt(dv.html.body.style('margin-right'), 10),
 		bottom: parseInt(dv.html.body.style('margin-bottom'), 10),
 		left: parseInt(dv.html.body.style('margin-left'), 10)
 	};
-*/
+
 	dv.draw.svg();
 	dv.dim.svg = {
-/*		h: (dv.dim.win.w - dv.html.svg.offsetTop - dv.dim.body.bottom) * 0.75,
+		h: (dv.dim.win.w - dv.html.svg.offsetTop - dv.dim.body.bottom) * 0.75,
 		w: dv.dim.win.w - dv.html.svg.offsetLeft - dv.dim.body.right
-*/		h: 890 * 0.75,
+/*		h: 890 * 0.75,
 		w: 890
-	};
+*/	};
 
 /*	dv.dim.svg.h = dv.dim.svg.h < mindim.h ? mindim.h : dv.dim.svg.h;
 	dv.dim.svg.w = dv.dim.svg.w < mindim.w ? mindim.w : dv.dim.svg.w;
